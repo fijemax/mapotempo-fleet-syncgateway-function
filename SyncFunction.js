@@ -130,8 +130,6 @@ function sync_func(doc, oldDoc) {
     switch(params.action) {
       case CREATING:
       case UPDATING:
-
-
         break;
       case DELETING:
       case UNDELETING:
@@ -154,7 +152,7 @@ function sync_func(doc, oldDoc) {
   // ####################
   function checkOwners(doc, oldDoc) {
     // Make sure that the owner propery exists:
-    var owners = oldDoc.owners ? oldDoc.owners : doc.owners;
+    var owners = oldDoc ? oldDoc.owners : doc.owners;
     if (!owners) {
       throw({forbidden : "Document must have owners."});
     }
