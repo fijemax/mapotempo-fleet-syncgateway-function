@@ -1,0 +1,131 @@
+################################################################################
+################################################################################
+##                                                                            ##
+##           __  ___ ___    ___   ____  ______ __  ___ ____ ___   ____        ##
+##          /  |/  // _ |  / _ \ / __ \/_  __// __//  |/  // _ \ / __ \       ##
+##         / /|_/ // __ | / ___// /_/ / / /  / _/ / /|_/ // ___// /_/ /       ##
+##        /_/  /_//_/ |_|/_/    \____/ /_/  /___//_/  /_//_/    \____/        ##
+##                       ____ __    ____ ____ ______                          ##
+##                      / __// /   / __// __//_  __/                          ##
+##                     / _/ / /__ / _/ / _/   / /                             ##
+##                    /_/  /____//___//___/  /_/                              ##
+##                                                                            ##
+##                                                                            ##
+################################################################################
+################################################################################
+
+#########################
+# Company description : #
+#########################
+
+    Company :
+    {
+      "type": "company",
+      "name": "STRING",
+      "address": {
+        "field_1": "STRING",
+        "field_2": "STRING",
+        "field_3": "STRING",
+        "zip_code":  "STRING",
+        "state":  "STRING",
+        "country":  "STRING"
+      }
+      "location": {
+        "lat": "FLOAT",
+        "lon": "FLOAT",
+      },
+      "owners": [ARRAY OF STRING]
+    }
+
+    Restrictions :
+      Require role : company:[name]
+
+    Channels :
+      Channel : company:[name]
+
+
+########################
+# Device description : #
+########################
+
+    Device :
+    {
+      "type": "device",
+      "name": "STRING",
+      "company": "STRING",
+      "owners": [ARRAY OF STRING]
+    }
+
+    Restrictions :
+      Require role : device:[name]
+
+    Channels :
+      Channel : device:[name]
+
+#########################
+# Mission description : #
+#########################
+
+    Mission :
+    {
+      "type": "mission",
+      "name": "STRING",
+      "delivery_date": "ISO8601-STRING",
+      "device": "STRING",
+      "location": {
+        "lat": "FLOAT",
+        "lon": "FLOAT",
+      },
+      "owners": [ARRAY OF STRING]
+    }
+
+    Restrictions :
+      Require role : device:[name]
+
+    Channels :
+      Channel : mission:[owner]:[yyyyMMmm]
+
+################################
+# Mission_Status description : #
+################################
+
+    Mission_Status :
+    {
+      "type": "mission_status",
+      "status": "ENUMERATOR",
+      "date": "ISO8601-STRING",
+      "mission": "STRING",
+      "location": {
+        "lat": "FLOAT",
+        "lon": "FLOAT",
+      },
+      "owners": [ARRAY OF STRING]
+    }
+
+    Restrictions :
+      Require role : device:[name]
+
+    Channels :
+      Channel : mission
+
+#######################
+# Track description : #
+#######################
+
+    Track :
+    {
+      "type": "track",
+      "date": "ISO8601-STRING",
+      "device": "STRING",
+      "location": {
+        "lat": "FLOAT",
+        "lon": "FLOAT",
+      },
+      "owners": [ARRAY OF STRING]
+    }
+
+    Restrictions :
+
+    Channels :
+
+

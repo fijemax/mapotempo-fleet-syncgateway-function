@@ -70,16 +70,16 @@ describe('my example document definitions', function() {
       oldDoc,
       {
         expectedRoles: ['mission:updating'],
-        expectedUsers: ['static', 'superman']
+        expectedUsers: ['static', "superman"]
       },
       [
         {
-          expectedChannels: ['mission:superman:20170725'],
-          expectedUsers: ['superman']
+          expectedUsers: ['static'],
+          expectedChannels: ['mission:static:20170725']
         },
         {
-          expectedChannels: ['mission:static:20170725'],
-          expectedUsers: ['static']
+          expectedUsers: ['superman'],
+          expectedChannels: ['mission:superman:20170725']
         }
       ]);
   });

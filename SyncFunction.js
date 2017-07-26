@@ -1,4 +1,4 @@
-function sync(doc, oldDoc) {
+function sync_func(doc, oldDoc) {
 
   // ########################
   // ########################
@@ -154,7 +154,7 @@ function sync(doc, oldDoc) {
   // ####################
   function checkOwners(doc, oldDoc) {
     // Make sure that the owner propery exists:
-    var owners = doc.owners;
+    var owners = oldDoc.owners ? oldDoc.owners : doc.owners;
     if (!owners) {
       throw({forbidden : "Document must have owners."});
     }
@@ -227,8 +227,7 @@ function sync(doc, oldDoc) {
     for(var i = 0; i < owners.length; i++) {
       owner_channels[i] = type + ":" + owners[i] + ":" + channel_date;
       channel(owner_channels[i]);
-      access(owners[i], owner_channels[i]);
-console.log(owners[i], owner_channels[i]);
+      access([owners[i]], [owner_channels[i]]);
     }
     return owner_channels;
   }
