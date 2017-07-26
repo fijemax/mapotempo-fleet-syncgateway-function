@@ -212,7 +212,7 @@ function sync_func(doc, oldDoc) {
   }
 
   function makeMissionChannels(owners, type, delivery_date) {
-    // Date format yyyyMMmm for channel
+    // Date format yyyyMMdd for channel
     var timestamp = Date.parse(delivery_date);
     if(isNaN(timestamp))
       throw({forbidden : "Document must have a delivery_date ISO8601 valid format."});
@@ -223,10 +223,13 @@ function sync_func(doc, oldDoc) {
 
     var owner_channels = [];
     for(var i = 0; i < owners.length; i++) {
+      // Create channel patern [type:owner:yyyyMMdd]
       owner_channels[i] = type + ":" + owners[i] + ":" + channel_date;
-      channel(owner_channels[i]);
+      // Adds an access to owner at his channel
       access([owners[i]], [owner_channels[i]]);
     }
+    // Add current doc in all channels
+    channel(owner_channels);
     return owner_channels;
   }
 
