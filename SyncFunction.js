@@ -92,7 +92,6 @@ function sync_func(doc, oldDoc) {
     var channel = makeDeviceChannel(doc, oldDoc, owner, params.type);
     switch(params.action) {
       case CREATING:
-
         access([owner], [channel]);
         break;
       case UPDATING:
@@ -111,26 +110,19 @@ function sync_func(doc, oldDoc) {
   // MISSION MANAGER
   // ###############
   function mission(doc, oldDoc, params){
-    // Check mission mandatory field (owner, super_owner, delivery_date, device, location, name)
     var owners = checkOwners(doc, oldDoc);
-
-    var delivery_date = checkDeliveryDate(doc, oldDoc);
-    checkLocation(doc, oldDoc);
-    checkName(doc, oldDoc);
-    checkDevice(doc, oldDoc);
-
-    // Create channels
-    var ownersChannels = makeMissionChannels(owners, params.type, delivery_date)
-
-    // Check requires
     requireUser(owners);
     requireRole(params.role);
+    var delivery_date = checkDeliveryDate(doc, oldDoc);
+    var ownersChannels = makeMissionChannels(owners, params.type, delivery_date);
     requireAccess(ownersChannels);
 
     switch(params.action) {
       case CREATING:
       case UPDATING:
-        break;
+        checkLocation(doc, oldDoc);
+        checkName(doc, oldDoc);
+        checkDevice(doc, oldDoc);
       case DELETING:
       case UNDELETING:
       case UPDATING_DELETED:
@@ -154,31 +146,31 @@ function sync_func(doc, oldDoc) {
     // Make sure that the owner propery exists:
     var owners = oldDoc ? oldDoc.owners : doc.owners;
     if (!owners) {
-      throw({forbidden : "Document must have owners."});
+      throw({forbidden : "Document must have owners"});
     }
 
     if (!owners.length > 0) {
-      throw({forbidden : "Document must have at least one owner."});
+      throw({forbidden : "Document must have at least one owner"});
     }
     return owners;
   }
 
   function checkDeliveryDate(doc, oldDoc) {
     // Make sure that the checkDeliveryDate propery exists:
-    if (!doc.delivery_date) {
-      throw({forbidden : "Document must have a delivery_date."});
+    var delivery_date = doc.delivery_date ? doc.delivery_date: oldDoc.delivery_date;
+    if (!delivery_date) {
+      throw({forbidden : "Document must have a delivery_date"});
     }
 
-    if(isNaN(Date.parse(doc.delivery_date)))
-      throw({forbidden : "Document must have a delivery_date ISO8601 valid format."});
-
-    return doc.delivery_date;
+    if(isNaN(Date.parse(delivery_date)))
+      throw({forbidden : "Document must have a delivery_date ISO8601 valid format"});
+    return delivery_date;
   }
 
   function checkDevice(doc, oldDoc) {
     // Make sure that the device propery exists:
     if (!doc.device) {
-      throw({forbidden : "Document must have a device."});
+      throw({forbidden : "Document must have a device"});
     }
     return doc.device;
   }
@@ -188,18 +180,18 @@ function sync_func(doc, oldDoc) {
     var location = doc.location;
     if (location) {
       if(isNaN(location.lon) || isNaN(location.lat))
-        throw({forbidden : "location lat and lon must be a float values."});
+        throw({forbidden : "location lat and lon must be a float values"});
       else
         return location;
     }
     else
-      throw({forbidden : "Document must have a location."});
+      throw({forbidden : "Document must have a location"});
     return location;
   }
 
   function checkName(doc, oldDoc) {
     if (!doc.name || typeof(doc.name) !== "string") {
-      throw({forbidden : "Document must have a name."});
+      throw({forbidden : "Document must have a name"});
     }
   }
   // ###############
@@ -215,7 +207,7 @@ function sync_func(doc, oldDoc) {
     // Date format yyyyMMdd for channel
     var timestamp = Date.parse(delivery_date);
     if(isNaN(timestamp))
-      throw({forbidden : "Document must have a delivery_date ISO8601 valid format."});
+      throw({forbidden : "Document must have a delivery_date ISO8601 valid format"});
     var date = new Date(timestamp);
     var channel_date = "" + date.getFullYear()
                   + ("0" + (date.getMonth() + 1)).slice(-2)
@@ -237,13 +229,16 @@ function sync_func(doc, oldDoc) {
   // Action and Role Helper
   // ######################
   function checkAndGetType(doc, oldDoc) {
-    var type = doc.type;
+    var type = oldDoc ? oldDoc.type : doc.type;
     if (!type || !TYPES_DRIVER[type]) {
       throw({forbidden : "Unknown document type"});
     }
-    if (oldDoc) {
+    if (oldDoc && doc) {
       if(oldDoc.type !== doc.type) {
-        throw({forbidden : "Document \"type\" can't be modify."});
+        // Check is not a delete action
+        if(doc._deleted !== true) {
+          throw({forbidden : "Document \"type\" can't be modify"});
+        }
       }
     }
     return type;
@@ -264,7 +259,7 @@ function sync_func(doc, oldDoc) {
         action = UPDATING_DELETED
     }
     else {
-      throw({forbidden : "Action can't be detected."});
+      action = DELETING;
     }
     return action;
   }
