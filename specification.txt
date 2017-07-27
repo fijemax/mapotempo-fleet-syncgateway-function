@@ -71,7 +71,7 @@
       "type": "mission",
       "name": "STRING",
       "delivery_date": "ISO8601-STRING",
-      "device": "STRING",
+      "device_id": "STRING",
       "location": {
         "lat": "FLOAT",
         "lon": "FLOAT",

@@ -1,5 +1,4 @@
 function sync_func(doc, oldDoc) {
-
   // ########################
   // ########################
   // ##                    ##
@@ -22,8 +21,6 @@ function sync_func(doc, oldDoc) {
   var CREATING = "creating";
   var UPDATING = "updating";
   var DELETING = "deleting";
-  var UNDELETING = "undeleting";
-  var UPDATING_DELETED = "updating_deleted";
 
   // ############################
   // ############################
@@ -40,14 +37,15 @@ function sync_func(doc, oldDoc) {
   // *  role   -> role is a string format as that "type:action" if the action needed a role to be performed it is this        *
   // **************************************************************************************************************************
   var params = {
-    type:   "unknow", // The type of document
-    action: "unknow", // The action being performed
-    role:   "unknow" // The role need to perform the action
+    type:       "unknow", // The type of document
+    action:     "unknow", // The action being performed
+    role:       "unknow", // The role need to perform the action
+    company_id: "unknow"  // The role need to perform the action
   }
-
   params.type = checkAndGetType(doc, oldDoc);
   params.action = checkAndGetAction(doc, oldDoc);
-  params.role = getRole(params.type, params.action);
+  params.company_id = getCompanyID(doc, oldDoc);
+  params.role = getRole(params.company_id, params.type, params.action);
 
   TYPES_DRIVER[params.type](doc, oldDoc, params);
 
@@ -63,18 +61,12 @@ function sync_func(doc, oldDoc) {
   // COMPANY MANAGER
   // ###############
   function company(doc, oldDoc, params) {
-    //var owners = checkOwner(doc, oldDoc);
-    //requireUser(owner);
     switch(params.action) {
       case CREATING:
         break;
       case UPDATING:
         break;
       case DELETING:
-        break;
-      case UNDELETING:
-        break;
-      case UPDATING_DELETED:
         break
       default:
     }
@@ -83,12 +75,7 @@ function sync_func(doc, oldDoc) {
   // ##############
   // DEVICE MANAGER
   // ##############
-  function device(doc, oldDoc, params){  
-    //var owner = checkOwner(doc, oldDoc);
-    // FIXME We can't check owner, because in reality device will be create by
-    // another user.
-    //requireUser(owner);
-
+  function device(doc, oldDoc, params){
     var channel = makeDeviceChannel(doc, oldDoc, owner, params.type);
     switch(params.action) {
       case CREATING:
@@ -98,10 +85,6 @@ function sync_func(doc, oldDoc) {
         break;
       case DELETING:
         break;
-      case UNDELETING:
-        break;
-      case UPDATING_DELETED:
-        break
       default:
     }
   }
@@ -110,8 +93,9 @@ function sync_func(doc, oldDoc) {
   // MISSION MANAGER
   // ###############
   function mission(doc, oldDoc, params){
-    // Check role before all
     requireRole(params.role);
+    checkCompanyID(doc, oldDoc);
+
     // Check owners
     var owners = checkOwners(doc, oldDoc);
     requireUser(owners);
@@ -125,16 +109,12 @@ function sync_func(doc, oldDoc) {
       case UPDATING:
         checkLocation(doc, oldDoc);
         checkName(doc, oldDoc);
-        checkDeviceID(doc, oldDoc);
         // Adds an access to owner at his specific channel
         for(var i = 0; i < ownersChannels.length; i++)
           access([owners[i]], [ownersChannels[i]]);
         break
       case DELETING:
-      case UNDELETING:
-      case UPDATING_DELETED:
       default:
-        break
     }
     // Add current doc in all channels
     channel(ownersChannels);
@@ -175,15 +155,6 @@ function sync_func(doc, oldDoc) {
     if(isNaN(Date.parse(delivery_date)))
       throw({forbidden : "Document must have a delivery_date ISO8601 valid format"});
     return delivery_date;
-  }
-
-  function checkDeviceID(doc, oldDoc) {
-    // Make sure that the device_id property exists, it is mandatory and doesn't be check on delete:
-    var device_id = doc.device_id;
-    if (!device_id) {
-      throw({forbidden : "Document must have a device_id"});
-    }
-    return device_id;
   }
 
   function checkLocation(doc, oldDoc) {
@@ -232,9 +203,9 @@ function sync_func(doc, oldDoc) {
     return owner_channels;
   }
 
-  // ######################
-  // Action and Role Helper
-  // ######################
+  // ##############################
+  // Action Company and Role Helper
+  // ##############################
   function checkAndGetType(doc, oldDoc) {
     var type = oldDoc ? oldDoc.type : doc.type;
     if (!type || !TYPES_DRIVER[type]) {
@@ -252,28 +223,35 @@ function sync_func(doc, oldDoc) {
   }
 
   function checkAndGetAction(doc, oldDoc) {
-    var action = CREATING;
-    if(doc && !oldDoc) {
-      action = CREATING;
+    if(!oldDoc)
+      return CREATING;
+    else if(doc._deleted)
+      return DELETING;
+    else
+      return UPDATING;
+  }
+
+  function getCompanyID(doc, oldDoc) {
+    return oldDoc ? oldDoc.company_id: doc.company_id;
+  }
+
+  function checkCompanyID(doc, oldDoc) {
+    var company_id = oldDoc ? oldDoc.company_id: doc.company_id;
+    if (!company_id) {
+      throw({forbidden : "Document must have a company_id"});
     }
-    else if(doc && oldDoc) {
-      action = UPDATING;
-      if(doc._deleted && !oldDoc._deleted)
-        action = DELETING;
-      else if(!doc._deleted && oldDoc._deleted)
-        action = UNDELETING;
-      else if(doc._deleted && oldDoc._deleted)
-        action = UPDATING_DELETED
+
+    // Make sure that nobody can modify company id.
+    if(doc && oldDoc)
+      if(doc.company_id && oldDoc.company_id)
+        if(doc.company_id != oldDoc.company_id) {
+          throw({forbidden : "Document ID can't be modify"});
     }
-    else {
-      action = DELETING;
-    }
-    return action;
   }
 
   // ROLES
-  function getRole(type, action) {
-    return type + ":" + action;
+  function getRole(company, type, action) {
+    return company + ":" + type + ":" + action;
   }
 }
 
