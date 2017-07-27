@@ -110,25 +110,35 @@ function sync_func(doc, oldDoc) {
   // MISSION MANAGER
   // ###############
   function mission(doc, oldDoc, params){
+    // Check role before all
+    requireRole(params.role);
+    // Check owners
     var owners = checkOwners(doc, oldDoc);
     requireUser(owners);
-    requireRole(params.role);
+
+    // Check delivery date and make channels
     var delivery_date = checkDeliveryDate(doc, oldDoc);
     var ownersChannels = makeMissionChannels(owners, params.type, delivery_date);
-    requireAccess(ownersChannels);
 
     switch(params.action) {
       case CREATING:
       case UPDATING:
         checkLocation(doc, oldDoc);
         checkName(doc, oldDoc);
-        checkDevice(doc, oldDoc);
+        checkDeviceID(doc, oldDoc);
+        // Adds an access to owner at his specific channel
+        for(var i = 0; i < ownersChannels.length; i++)
+          access([owners[i]], [ownersChannels[i]]);
+        break
       case DELETING:
       case UNDELETING:
       case UPDATING_DELETED:
       default:
         break
     }
+    // Add current doc in all channels
+    channel(ownersChannels);
+    requireAccess(ownersChannels);
   }
 
   // ###################################
@@ -167,12 +177,13 @@ function sync_func(doc, oldDoc) {
     return delivery_date;
   }
 
-  function checkDevice(doc, oldDoc) {
-    // Make sure that the device propery exists:
-    if (!doc.device) {
-      throw({forbidden : "Document must have a device"});
+  function checkDeviceID(doc, oldDoc) {
+    // Make sure that the device_id property exists, it is mandatory and doesn't be check on delete:
+    var device_id = doc.device_id;
+    if (!device_id) {
+      throw({forbidden : "Document must have a device_id"});
     }
-    return doc.device;
+    return device_id;
   }
 
   function checkLocation(doc, oldDoc) {
@@ -217,11 +228,7 @@ function sync_func(doc, oldDoc) {
     for(var i = 0; i < owners.length; i++) {
       // Create channel patern [type:owner:yyyyMMdd]
       owner_channels[i] = type + ":" + owners[i] + ":" + channel_date;
-      // Adds an access to owner at his channel
-      access([owners[i]], [owner_channels[i]]);
     }
-    // Add current doc in all channels
-    channel(owner_channels);
     return owner_channels;
   }
 
