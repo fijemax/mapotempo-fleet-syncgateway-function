@@ -109,6 +109,7 @@ function sync_func(doc, oldDoc) {
       case UPDATING:
         checkLocation(doc, oldDoc);
         checkName(doc, oldDoc);
+        checkAddress(doc, oldDoc);
         // Adds an access to owner at his specific channel
         for(var i = 0; i < ownersChannels.length; i++)
           access([owners[i]], [ownersChannels[i]]);
@@ -160,7 +161,7 @@ function sync_func(doc, oldDoc) {
   }
 
   function checkLocation(doc, oldDoc) {
-    // Make sure that the location propery exists:
+    // Make sure that the location propery exists in the new doc :
     var location = doc.location;
     if (location) {
       if(isNaN(location.lon) || isNaN(location.lat))
@@ -171,6 +172,26 @@ function sync_func(doc, oldDoc) {
     else
       throw({forbidden : "Document must have a location"});
     return location;
+  }
+
+  function checkAddress(doc, oldDoc) {
+    // Make sure that the location propery exists in the new doc :
+    var address = doc.address;
+    if (address) {
+      if(!address.street)
+        throw({forbidden : "street field in address is mandatory"});
+      if(!address.postalcode)
+        throw({forbidden : "postalcode field in address is mandatory"});
+      if(!address.city)
+        throw({forbidden : "city field in address is mandatory"});
+      if(!address.state)
+        throw({forbidden : "state field in address is mandatory"});
+      if(!address.country)
+        throw({forbidden : "country field in address is mandatory"});
+    }
+    else
+      throw({forbidden : "Document must have an address"});
+    return address;
   }
 
   function checkName(doc, oldDoc) {

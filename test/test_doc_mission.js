@@ -19,6 +19,14 @@ describe("Mission create update delete test", function() {
         "lat": 45.0,
         "lon": 2.0
       },
+     "address" : {
+        "street": "9 Rue André Darbon",          // character varying(255),
+        "postalcode": "33000",                  // character varying(255),
+        "city": "Bordeaux",                     // character varying(255),
+        "state": "Gironde",                     // character varying
+        "country": "France",                    // character varying
+        "detail": "Pépinière éco-créative"      // text
+      },
       "name": "test",
       "owners": ["static", "superman"],
       "type": "mission",
@@ -52,6 +60,14 @@ describe("Mission create update delete test", function() {
         "lat": 45.0,
         "lon": 2.0
       },
+     "address" : {
+        "street": "9 Rue André Darbon",          // character varying(255),
+        "postalcode": "33000",                  // character varying(255),
+        "city": "Bordeaux",                     // character varying(255),
+        "state": "Gironde",                     // character varying
+        "country": "France",                    // character varying
+        "detail": "Pépinière éco-créative"      // text
+      },
       "name": "test",
       "owners": [],
       "type": "mission",
@@ -76,6 +92,14 @@ describe("Mission create update delete test", function() {
         "lat": 45.0,
         "lon": 2.0
       },
+     "address" : {
+        "street": "9 Rue André Darbon",          // character varying(255),
+        "postalcode": "33000",                  // character varying(255),
+        "city": "Bordeaux",                     // character varying(255),
+        "state": "Gironde",                     // character varying
+        "country": "France",                    // character varying
+        "detail": "Pépinière éco-créative"      // text
+      },
       "name": "test",
       // "owners": ["static", "superman"],
       "type": "mission",
@@ -99,6 +123,14 @@ describe("Mission create update delete test", function() {
       "location": {
         "lat": 45.0,
         "lon": 2.0
+      },
+     "address" : {
+        "street": "9 Rue André Darbon",          // character varying(255),
+        "postalcode": "33000",                  // character varying(255),
+        "city": "Bordeaux",                     // character varying(255),
+        "state": "Gironde",                     // character varying
+        "country": "France",                    // character varying
+        "detail": "Pépinière éco-créative"      // text
       },
       "name": "test",
       "owners": ["static", "superman"],
@@ -125,6 +157,14 @@ describe("Mission create update delete test", function() {
         "lat": 45.0,
         "lon": 2.0
       },
+     "address" : {
+        "street": "9 Rue André Darbon",          // character varying(255),
+        "postalcode": "33000",                  // character varying(255),
+        "city": "Bordeaux",                     // character varying(255),
+        "state": "Gironde",                     // character varying
+        "country": "France",                    // character varying
+        "detail": "Pépinière éco-créative"      // text
+      },
       "name": "test",
       "owners": ["static", "superman"],
       "type": "mission",
@@ -150,6 +190,14 @@ describe("Mission create update delete test", function() {
         "lat": 45.0,
         "lon": 2.0
       },
+     "address" : {
+        "street": "9 Rue André Darbon",          // character varying(255),
+        "postalcode": "33000",                  // character varying(255),
+        "city": "Bordeaux",                     // character varying(255),
+        "state": "Gironde",                     // character varying
+        "country": "France",                    // character varying
+        "detail": "Pépinière éco-créative"      // text
+      },
       "name": "test",
       "owners": ["static"],
       "type": "mission",
@@ -174,6 +222,14 @@ describe("Mission create update delete test", function() {
         "lat": 45.0,
         "lon": 2.0
       },*/
+     "address" : {
+        "street": "9 Rue André Darbon",          // character varying(255),
+        "postalcode": "33000",                  // character varying(255),
+        "city": "Bordeaux",                     // character varying(255),
+        "state": "Gironde",                     // character varying
+        "country": "France",                    // character varying
+        "detail": "Pépinière éco-créative"      // text
+      },
       "name": "test",
       "owners": ["static", "superman"],
       "type": "mission",
@@ -198,6 +254,14 @@ describe("Mission create update delete test", function() {
         "lat": 45.0,
         "lon": 2.0
       },
+     "address" : {
+        "street": "9 Rue André Darbon",          // character varying(255),
+        "postalcode": "33000",                  // character varying(255),
+        "city": "Bordeaux",                     // character varying(255),
+        "state": "Gironde",                     // character varying
+        "country": "France",                    // character varying
+        "detail": "Pépinière éco-créative"      // text
+      },
       // "name": "test",
       "owners": ["static", "superman"],
       "type": "mission",
@@ -208,6 +272,38 @@ describe("Mission create update delete test", function() {
       doc,
       "mission",
       "Document must have a name",
+      {
+        expectedRoles: ["UIOAZHD4564DAZD:mission:creating"],
+        expectedUsers: ["static", "superman"]
+      });
+  });
+
+  it("Create : 9- can't create a mission document without address field", function() {
+    var doc = {
+      "delivery_date": "2017-07-21T16:22:27.348Z",
+      "company_id": "UIOAZHD4564DAZD",
+      "location": {
+        "lat": 45.0,
+        "lon": 2.0
+      },
+     /*"address" : {
+        "street": "9 Rue André Darbon",          // character varying(255),
+        "postalcode": "33000",                  // character varying(255),
+        "city": "Bordeaux",                     // character varying(255),
+        "state": "Gironde",                     // character varying
+        "country": "France",                    // character varying
+        "detail": "Pépinière éco-créative"      // text
+      },*/
+       "name": "test",
+      "owners": ["static", "superman"],
+      "type": "mission",
+      "_id": "Mission_1534a8de-b412-49bc-97a8-3b535d131406"
+    }
+
+    testHelper.verifyDocumentNotCreated(
+      doc,
+      "mission",
+      "Document must have an address",
       {
         expectedRoles: ["UIOAZHD4564DAZD:mission:creating"],
         expectedUsers: ["static", "superman"]
@@ -225,6 +321,14 @@ describe("Mission create update delete test", function() {
       "location": {
         "lat": 45.0,
         "lon": 2.0
+      },
+     "address" : {
+        "street": "9 Rue André Darbon",          // character varying(255),
+        "postalcode": "33000",                  // character varying(255),
+        "city": "Bordeaux",                     // character varying(255),
+        "state": "Gironde",                     // character varying
+        "country": "France",                    // character varying
+        "detail": "Pépinière éco-créative"      // text
       },
       "name": "test",
       "owners": ["static", "superman"],
@@ -261,6 +365,14 @@ describe("Mission create update delete test", function() {
       "location": {
         "lat": 45.0,
         "lon": 2.0
+      },
+     "address" : {
+        "street": "9 Rue André Darbon",          // character varying(255),
+        "postalcode": "33000",                  // character varying(255),
+        "city": "Bordeaux",                     // character varying(255),
+        "state": "Gironde",                     // character varying
+        "country": "France",                    // character varying
+        "detail": "Pépinière éco-créative"      // text
       },
       "name": "test",
       "owners": ["static", "superman"],
@@ -299,6 +411,14 @@ describe("Mission create update delete test", function() {
         "lat": 45.0,
         "lon": 2.0
       },
+     "address" : {
+        "street": "9 Rue André Darbon",          // character varying(255),
+        "postalcode": "33000",                  // character varying(255),
+        "city": "Bordeaux",                     // character varying(255),
+        "state": "Gironde",                     // character varying
+        "country": "France",                    // character varying
+        "detail": "Pépinière éco-créative"      // text
+      },
       "name": "test",
       "owners": ["static", "superman"],
       "type": "mission",
@@ -335,6 +455,14 @@ describe("Mission create update delete test", function() {
         "lat": 45.0,
         "lon": 2.0
       },
+     "address" : {
+        "street": "9 Rue André Darbon",          // character varying(255),
+        "postalcode": "33000",                  // character varying(255),
+        "city": "Bordeaux",                     // character varying(255),
+        "state": "Gironde",                     // character varying
+        "country": "France",                    // character varying
+        "detail": "Pépinière éco-créative"      // text
+      },
       "name": "test",
       "owners": ["static", "superman"],
       "type": "mission",
@@ -362,6 +490,14 @@ describe("Mission create update delete test", function() {
         "lat": 45.0,
         "lon": 2.0
       },
+     "address" : {
+        "street": "9 Rue André Darbon",          // character varying(255),
+        "postalcode": "33000",                  // character varying(255),
+        "city": "Bordeaux",                     // character varying(255),
+        "state": "Gironde",                     // character varying
+        "country": "France",                    // character varying
+        "detail": "Pépinière éco-créative"      // text
+      },
       "name": "test",
       "owners": ["static", "superman"],
       "type": "mission",
@@ -370,6 +506,54 @@ describe("Mission create update delete test", function() {
 
     var doc = Object.assign({}, oldDoc);
     doc.ownrs = ["statoc", "superman"];
+
+    testHelper.verifyDocumentReplaced(
+      doc,
+      oldDoc,
+      {
+        expectedRoles: ["UIOAZHD4564DAZD:mission:updating"],
+        expectedUsers: ["static", "superman"]
+      },
+      [
+        {
+          expectedUsers: ["static"],
+          expectedChannels: ["mission:static:20170721"]
+        },
+        {
+          expectedUsers: ["superman"],
+          expectedChannels: ["mission:superman:20170721"]
+        }
+      ]);
+  });
+
+  it("Update : 6- can update the address field mission document", function() {
+    var oldDoc = {
+      "delivery_date": "2017-07-21T16:22:27.348Z",
+      "company_id": "UIOAZHD4564DAZD",
+      "location": {
+        "lat": 45.0,
+        "lon": 2.0
+      },
+     "address" : {
+        "street": "9 Rue André Darbon",
+        "postalcode": "33000",
+        "city": "Bordeaux",
+        "state": "Gironde",
+        "country": "France",
+        "detail": "Pépinière éco-créative"
+      },
+      "name": "test",
+      "owners": ["static", "superman"],
+      "type": "mission",
+      "_id": "Mission_1534a8de-b412-49bc-97a8-3b535d131406"
+    }
+
+    var doc = Object.assign({}, oldDoc);
+    doc.address.street = "1 Rue de la soif";
+    doc.address.postalcode = "33800";
+    doc.address.city = "UnkowCity";
+    doc.address.state = "Heeeeeeeeeeey";
+    doc.address.country = "Je test et j'écris ce que je veux de toute facon, puisque c'est juste pour tester donc cette ligne elle peut etre trés longue !";
 
     testHelper.verifyDocumentReplaced(
       doc,
@@ -401,6 +585,14 @@ describe("Mission create update delete test", function() {
       "location": {
         "lat": 45.0,
         "lon": 2.0
+      },
+     "address" : {
+        "street": "9 Rue André Darbon",          // character varying(255),
+        "postalcode": "33000",                  // character varying(255),
+        "city": "Bordeaux",                     // character varying(255),
+        "state": "Gironde",                     // character varying
+        "country": "France",                    // character varying
+        "detail": "Pépinière éco-créative"      // text
       },
       "name": "test",
       "owners": ["static", "superman"],
