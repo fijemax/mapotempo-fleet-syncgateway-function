@@ -47,6 +47,11 @@ function sync_func(doc, oldDoc) {
   params.company_id = getCompanyID(doc, oldDoc);
   params.role = getRole(params.company_id, params.type, params.action);
 
+  // Check role and company
+  requireRole(params.role);
+  checkCompanyID(doc, oldDoc);
+
+  // Chech type
   TYPES_DRIVER[params.type](doc, oldDoc, params);
 
   // #######################################
@@ -91,9 +96,6 @@ function sync_func(doc, oldDoc) {
   // MISSION MANAGER
   // ###############
   function mission(doc, oldDoc, params){
-    requireRole(params.role);
-    checkCompanyID(doc, oldDoc);
-
     // Check owners
     var owners = checkOwners(doc, oldDoc);
     requireUser(owners);
