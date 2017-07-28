@@ -2,7 +2,7 @@ var testHelper = require('../node_modules/synctos/etc/test-helper.js');
 
 var errorFormatter = testHelper.validationErrorFormatter;
 
-describe('my example document definitions', function() {
+describe('Document create update delete test', function() {
   beforeEach(function() {
     testHelper.initSyncFunction('SyncFunction.js');
   });

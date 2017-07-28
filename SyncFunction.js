@@ -76,10 +76,8 @@ function sync_func(doc, oldDoc) {
   // DEVICE MANAGER
   // ##############
   function device(doc, oldDoc, params){
-    var channel = makeDeviceChannel(doc, oldDoc, owner, params.type);
     switch(params.action) {
       case CREATING:
-        access([owner], [channel]);
         break;
       case UPDATING:
         break;
@@ -147,11 +145,13 @@ function sync_func(doc, oldDoc) {
 
   function checkDeliveryDate(doc, oldDoc) {
     // Make sure that the checkDeliveryDate propery exists:
-    var delivery_date = doc.delivery_date ? doc.delivery_date: oldDoc.delivery_date;
+    var delivery_date = doc ? doc.delivery_date : oldDoc.delivery_date;
+    // On test le cas ou delivery_date est null pour prendre celui du oldDoc (pour la suppression)
+    delivery_date = (!delivery_date &&  oldDoc) ? oldDoc.delivery_date : delivery_date;
+
     if (!delivery_date) {
       throw({forbidden : "Document must have a delivery_date"});
     }
-
     if(isNaN(Date.parse(delivery_date)))
       throw({forbidden : "Document must have a delivery_date ISO8601 valid format"});
     return delivery_date;
