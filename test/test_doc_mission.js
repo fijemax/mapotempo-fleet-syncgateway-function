@@ -20,7 +20,7 @@ describe("Mission create update delete test", function() {
         "lon": 2.0
       },
      "address" : {
-        "street": "9 Rue André Darbon",          // character varying(255),
+        "street": "9 Rue André Darbon",         // character varying(255),
         "postalcode": "33000",                  // character varying(255),
         "city": "Bordeaux",                     // character varying(255),
         "state": "Gironde",                     // character varying
@@ -61,7 +61,7 @@ describe("Mission create update delete test", function() {
         "lon": 2.0
       },
      "address" : {
-        "street": "9 Rue André Darbon",          // character varying(255),
+        "street": "9 Rue André Darbon",         // character varying(255),
         "postalcode": "33000",                  // character varying(255),
         "city": "Bordeaux",                     // character varying(255),
         "state": "Gironde",                     // character varying
@@ -93,7 +93,7 @@ describe("Mission create update delete test", function() {
         "lon": 2.0
       },
      "address" : {
-        "street": "9 Rue André Darbon",          // character varying(255),
+        "street": "9 Rue André Darbon",         // character varying(255),
         "postalcode": "33000",                  // character varying(255),
         "city": "Bordeaux",                     // character varying(255),
         "state": "Gironde",                     // character varying
@@ -125,7 +125,7 @@ describe("Mission create update delete test", function() {
         "lon": 2.0
       },
      "address" : {
-        "street": "9 Rue André Darbon",          // character varying(255),
+        "street": "9 Rue André Darbon",         // character varying(255),
         "postalcode": "33000",                  // character varying(255),
         "city": "Bordeaux",                     // character varying(255),
         "state": "Gironde",                     // character varying
@@ -158,7 +158,7 @@ describe("Mission create update delete test", function() {
         "lon": 2.0
       },
      "address" : {
-        "street": "9 Rue André Darbon",          // character varying(255),
+        "street": "9 Rue André Darbon",         // character varying(255),
         "postalcode": "33000",                  // character varying(255),
         "city": "Bordeaux",                     // character varying(255),
         "state": "Gironde",                     // character varying
@@ -191,7 +191,7 @@ describe("Mission create update delete test", function() {
         "lon": 2.0
       },
      "address" : {
-        "street": "9 Rue André Darbon",          // character varying(255),
+        "street": "9 Rue André Darbon",         // character varying(255),
         "postalcode": "33000",                  // character varying(255),
         "city": "Bordeaux",                     // character varying(255),
         "state": "Gironde",                     // character varying
@@ -223,7 +223,7 @@ describe("Mission create update delete test", function() {
         "lon": 2.0
       },*/
      "address" : {
-        "street": "9 Rue André Darbon",          // character varying(255),
+        "street": "9 Rue André Darbon",         // character varying(255),
         "postalcode": "33000",                  // character varying(255),
         "city": "Bordeaux",                     // character varying(255),
         "state": "Gironde",                     // character varying
@@ -255,7 +255,7 @@ describe("Mission create update delete test", function() {
         "lon": 2.0
       },
      "address" : {
-        "street": "9 Rue André Darbon",          // character varying(255),
+        "street": "9 Rue André Darbon",         // character varying(255),
         "postalcode": "33000",                  // character varying(255),
         "city": "Bordeaux",                     // character varying(255),
         "state": "Gironde",                     // character varying
@@ -287,7 +287,7 @@ describe("Mission create update delete test", function() {
         "lon": 2.0
       },
      /*"address" : {
-        "street": "9 Rue André Darbon",          // character varying(255),
+        "street": "9 Rue André Darbon",         // character varying(255),
         "postalcode": "33000",                  // character varying(255),
         "city": "Bordeaux",                     // character varying(255),
         "state": "Gironde",                     // character varying
@@ -323,7 +323,7 @@ describe("Mission create update delete test", function() {
         "lon": 2.0
       },
      "address" : {
-        "street": "9 Rue André Darbon",          // character varying(255),
+        "street": "9 Rue André Darbon",         // character varying(255),
         "postalcode": "33000",                  // character varying(255),
         "city": "Bordeaux",                     // character varying(255),
         "state": "Gironde",                     // character varying
@@ -587,7 +587,7 @@ describe("Mission create update delete test", function() {
         "lon": 2.0
       },
      "address" : {
-        "street": "9 Rue André Darbon",          // character varying(255),
+        "street": "9 Rue André Darbon",         // character varying(255),
         "postalcode": "33000",                  // character varying(255),
         "city": "Bordeaux",                     // character varying(255),
         "state": "Gironde",                     // character varying

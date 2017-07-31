@@ -42,14 +42,15 @@ function sync_func(doc, oldDoc) {
     role:       "unknow", // The role need to perform the action
     company_id: "unknow"  // The role need to perform the action
   }
+
   params.type = checkAndGetType(doc, oldDoc);
   params.action = checkAndGetAction(doc, oldDoc);
-  params.company_id = getCompanyID(doc, oldDoc);
+  params.company_id = getCompanyID(doc, oldDoc, params.type);
   params.role = getRole(params.company_id, params.type, params.action);
 
   // Check role and company
   requireRole(params.role);
-  checkCompanyID(doc, oldDoc);
+  checkCompanyID(doc, oldDoc, params.type);
 
   // Chech type
   TYPES_DRIVER[params.type](doc, oldDoc, params);
@@ -66,15 +67,24 @@ function sync_func(doc, oldDoc) {
   // COMPANY MANAGER
   // ###############
   function company(doc, oldDoc, params) {
+    var owners = checkOwners(doc, oldDoc);
+    requireUser(owners);
+
+    var ownersChannels = makeCompanyChannel(owners, params.type);
+
     switch(params.action) {
       case CREATING:
-        break;
       case UPDATING:
-        break;
+        checkName(doc, oldDoc);
+        for(var i = 0; i < ownersChannels.length; i++)
+          access([owners[i]], [ownersChannels[i]]);
       case DELETING:
         break
       default:
     }
+    // Add current doc in all channels
+    channel(ownersChannels);
+    requireAccess(ownersChannels);
   }
 
   // ##############
@@ -202,10 +212,13 @@ function sync_func(doc, oldDoc) {
   // ###############
   // Channel Factory
   // ###############
-  function makeDeviceChannel(doc, oldDoc, owner, type) {
-    var owner_channel = type + ":" + owner;
-    channel([owner_channel]);
-    return owner_channel;
+  function makeCompanyChannel(owners, type) {
+    var owner_channels = [];
+    for(var i = 0; i < owners.length; i++) {
+      // Create channel patern [type:owner:yyyyMMdd]
+      owner_channels[i] = type + ":" + owners[i];
+    }
+    return owner_channels;
   }
 
   function makeMissionChannels(owners, type, delivery_date) {
@@ -254,11 +267,17 @@ function sync_func(doc, oldDoc) {
       return UPDATING;
   }
 
-  function getCompanyID(doc, oldDoc) {
-    return oldDoc ? oldDoc.company_id: doc.company_id;
+  function getCompanyID(doc, oldDoc, type) {
+    if(type === "company")
+      return oldDoc ? oldDoc._id : doc._id;
+    else
+      return oldDoc ? oldDoc.company_id : doc.company_id;
   }
 
-  function checkCompanyID(doc, oldDoc) {
+  function checkCompanyID(doc, oldDoc, type) {
+    if(type === "company")
+      return;
+
     var company_id = oldDoc ? oldDoc.company_id: doc.company_id;
     if (!company_id) {
       throw({forbidden : "Document must have a company_id"});
