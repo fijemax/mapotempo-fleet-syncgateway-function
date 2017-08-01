@@ -16,23 +16,13 @@ describe("Company create update delete test", function() {
         var doc = {
             "_id": "company_xxxxxxxx",
             "type": "company",
-            "name": "Mapotempo",
-            "owners": ["superman", "static"]
+            "name": "Mapotempo"
         }
 
         testHelper.verifyDocumentCreated(
             doc, {
                 expectedRoles: ["company_xxxxxxxx:company:creating"],
-                expectedUsers: ["static", "superman"],
-                expectedChannels: ["company:static", "company:superman"]
-            }, [{
-                    expectedChannels: ["company:static"],
-                    expectedUsers: ["static"]
-                },
-                {
-                    expectedChannels: ["company:superman"],
-                    expectedUsers: ["superman"]
-                }
-            ]);
+                //                expectedChannels: ["company:company_xxxxxxxx"]
+            });
     })
 })

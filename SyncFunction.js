@@ -8,9 +8,17 @@ function sync_func(doc, oldDoc) {
     // ########################
 
     // TYPES CONST
+    var COMPANY = "company";
+    var USER = "user";
+    var MISSION = "mission";
+    var MISSION_STATUS = "mission_status";
+    var TRACK = "track";
+    var METADATA = "metadata";
+
+    // TYPES DRIVER
     var TYPES_DRIVER = {
         "company": company,
-        "device": device,
+        "user": user,
         "mission": mission,
         "mission_status": "",
         "track": "",
@@ -68,39 +76,43 @@ function sync_func(doc, oldDoc) {
     // COMPANY MANAGER
     // ###############
     function company(doc, oldDoc, params) {
-        var owners = checkOwners(doc, oldDoc);
-        requireUser(owners);
-
-        var ownersChannels = makeCompanyChannel(owners, params.type);
+        var companyChannel = makeCompanyChannel(params.company_id);
 
         switch (params.action) {
             case CREATING:
             case UPDATING:
                 checkName(doc, oldDoc);
-                for (var i = 0; i < ownersChannels.length; i++)
-                    access([owners[i]], [ownersChannels[i]]);
+                break;
             case DELETING:
-                break
+                break;
             default:
         }
+
         // Add current doc in all channels
-        channel(ownersChannels);
-        requireAccess(ownersChannels);
+        channel([companyChannel]);
     }
 
     // ##############
-    // DEVICE MANAGER
+    // USER MANAGER
     // ##############
-    function device(doc, oldDoc, params) {
+    function user(doc, oldDoc, params) {
+        var user = checkUser(doc, oldDoc);
+        var channelUser = makeUserChannel(user);
+        var companyChannel = makeCompanyChannel(params.company_id);
+
         switch (params.action) {
             case CREATING:
-                break;
             case UPDATING:
+                access([user], [channelUser]);
+                access([user], [companyChannel]);
                 break;
             case DELETING:
                 break;
             default:
         }
+
+        channel([channelUser]);
+        requireAccess([channelUser]);
     }
 
     // ###############
@@ -113,7 +125,7 @@ function sync_func(doc, oldDoc) {
 
         // Check delivery date and make channels
         var delivery_date = checkDeliveryDate(doc, oldDoc);
-        var ownersChannels = makeMissionChannels(owners, params.type, delivery_date);
+        var ownersChannels = makeMissionChannels(owners, delivery_date);
 
         switch (params.action) {
             case CREATING:
@@ -144,6 +156,23 @@ function sync_func(doc, oldDoc) {
     // ####################
     // Check Document Field
     // ####################
+    function checkUser(doc, oldDoc) {
+
+        // Make sure that the user propery exists:
+        var user = oldDoc ? oldDoc.user : doc.user;
+        if (!user) {
+            throw ({
+                forbidden: "Document must have user"
+            });
+        }
+        if (Array.isArray(user)) {
+            throw ({
+                forbidden: "It can only have one user"
+            });
+        }
+        return user;
+    }
+
     function checkOwners(doc, oldDoc) {
         // Make sure that the owner propery exists:
         var owners = oldDoc ? oldDoc.owners : doc.owners;
@@ -237,16 +266,15 @@ function sync_func(doc, oldDoc) {
     // ###############
     // Channel Factory
     // ###############
-    function makeCompanyChannel(owners, type) {
-        var owner_channels = [];
-        for (var i = 0; i < owners.length; i++) {
-            // Create channel patern [type:owner:yyyyMMdd]
-            owner_channels[i] = type + ":" + owners[i];
-        }
-        return owner_channels;
+    function makeCompanyChannel(company_id) {
+        return COMPANY + ":" + company_id;
     }
 
-    function makeMissionChannels(owners, type, delivery_date) {
+    function makeUserChannel(user) {
+        return USER + ":" + user;
+    }
+
+    function makeMissionChannels(owners, delivery_date) {
         // Date format yyyyMMdd for channel
         var timestamp = Date.parse(delivery_date);
         if (isNaN(timestamp))
@@ -261,7 +289,7 @@ function sync_func(doc, oldDoc) {
         var owner_channels = [];
         for (var i = 0; i < owners.length; i++) {
             // Create channel patern [type:owner:yyyyMMdd]
-            owner_channels[i] = type + ":" + owners[i] + ":" + channel_date;
+            owner_channels[i] = MISSION + ":" + owners[i] + ":" + channel_date;
         }
         return owner_channels;
     }
