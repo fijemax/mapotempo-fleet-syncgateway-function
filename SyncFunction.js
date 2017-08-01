@@ -30,17 +30,18 @@ function sync_func(doc, oldDoc) {
   // ############################
   // ############################
 
-  // **************************************************************************************************************************
-  // * 'type', 'action' and 'role' are accessible for all the functions                                                       *
-  // *  type   -> type is a string format extrat from doc.type, it is MANDATORY and it must be one of the key in TYPES_DRIVER *
-  // *  action -> "action" is the current action perfomed by the user on the document                                         *
-  // *  role   -> role is a string format as that "type:action" if the action needed a role to be performed it is this        *
-  // **************************************************************************************************************************
+  // *****************************************************************************************************************************************
+  // * params : 'type', 'action' and 'role' are accessible for all the functions                                                             *
+  // *  type       -> type is a string format extrat from doc.type, it is MANDATORY and it must be one of the key in TYPES_DRIVER            *
+  // *  action     -> "action" is the current action perfomed by the user on the document                                                    *
+  // *  role       -> role is a string format as that "type:action" if the action needed a role to be performed it is this                   *
+  // *  company_id -> company_id is a id string format, we can't assure in the sync function that the company really exist in the bucket ... *
+  // *****************************************************************************************************************************************
   var params = {
     type:       "unknow", // The type of document
     action:     "unknow", // The action being performed
     role:       "unknow", // The role need to perform the action
-    company_id: "unknow"  // The role need to perform the action
+    company_id: "unknow"  // The company id
   }
 
   params.type = checkAndGetType(doc, oldDoc);
@@ -185,7 +186,7 @@ function sync_func(doc, oldDoc) {
   }
 
   function checkAddress(doc, oldDoc) {
-    // Make sure that the location propery exists in the new doc :
+    // Make sure that the address propery exists in the new doc :
     var address = doc.address;
     if (address) {
       if(!address.street)
