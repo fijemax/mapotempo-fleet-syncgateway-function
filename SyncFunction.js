@@ -112,7 +112,7 @@ function sync_func(doc, oldDoc) {
         }
 
         channel([channelUser]);
-        requireAccess([channelUser]);
+        // requireAccess([channelUser]);
     }
 
     // ###############
@@ -142,7 +142,7 @@ function sync_func(doc, oldDoc) {
         }
         // Add current doc in all channels
         channel(ownersChannels);
-        requireAccess(ownersChannels);
+        // requireAccess(ownersChannels);
     }
 
     // ###################################
@@ -358,4 +358,4 @@ function sync_func(doc, oldDoc) {
     function getRole(company, type, action) {
         return company + ":" + type + ":" + action;
     }
-}
+} 

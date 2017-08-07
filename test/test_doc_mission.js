@@ -36,8 +36,7 @@ describe("Mission create update delete test", function() {
         testHelper.verifyDocumentCreated(
             doc, {
                 expectedRoles: ["UIOAZHD4564DAZD:mission:creating"],
-                expectedUsers: ["static", "superman"],
-                expectedChannels: ["mission:static:20170721", "mission:superman:20170721"]
+                expectedUsers: ["static", "superman"]
             }, [{
                     expectedChannels: ["mission:static:20170721"],
                     expectedUsers: ["static"]
