@@ -11,6 +11,7 @@ function sync_func(doc, oldDoc) {
     var COMPANY = "company";
     var USER = "user";
     var MISSION = "mission";
+    var MISSION_STATUS_TYPE = "mission_status_type";
     var MISSION_STATUS = "mission_status";
     var TRACK = "track";
     var METADATA = "metadata";
@@ -20,6 +21,7 @@ function sync_func(doc, oldDoc) {
         "company": company,
         "user": user,
         "mission": mission,
+        "mission_status_type": mission_status_type,
         "mission_status": "",
         "track": "",
         "metadata": ""
@@ -99,12 +101,14 @@ function sync_func(doc, oldDoc) {
         var user = checkUser(doc, oldDoc);
         var channelUser = makeUserChannel(user);
         var companyChannel = makeCompanyChannel(params.company_id);
+        var missionStatusTypeChannel = makeMissionStatusTypeChannel(params.company_id);
 
         switch (params.action) {
             case CREATING:
             case UPDATING:
                 access([user], [channelUser]);
                 access([user], [companyChannel]);
+                access([user], [missionStatusTypeChannel]);
                 break;
             case DELETING:
                 break;
@@ -143,6 +147,21 @@ function sync_func(doc, oldDoc) {
         // Add current doc in all channels
         channel(ownersChannels);
         // requireAccess(ownersChannels);
+    }
+
+    // ######################
+    // MISSION STATUS TYPE MANAGER
+    // ######################
+    function mission_status_type(doc, oldDoc, params) {
+        var missionStatusTypeChannel = makeMissionStatusTypeChannel(params.company_id);
+        /*switch (params.action) {
+            case CREATING:
+            case UPDATING:
+            case DELETING:
+            default:
+        }*/
+        // Add current doc in all channels
+        channel([missionStatusTypeChannel]);
     }
 
     // ###################################
@@ -268,6 +287,10 @@ function sync_func(doc, oldDoc) {
     // ###############
     function makeCompanyChannel(company_id) {
         return COMPANY + ":" + company_id;
+    }
+
+    function makeMissionStatusTypeChannel(company_id) {
+        return MISSION_STATUS_TYPE + ":" + company_id;
     }
 
     function makeUserChannel(user) {

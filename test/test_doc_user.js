@@ -31,6 +31,10 @@ describe("User create update delete test", function() {
                 {
                     expectedChannels: ["company:company_xxxx"],
                     expectedUsers: ["static"]
+                },
+                {
+                    expectedChannels: ["mission_status_type:company_xxxx"],
+                    expectedUsers: ["static"]
                 }
             ]);
     })
