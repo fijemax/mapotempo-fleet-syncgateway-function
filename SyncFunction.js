@@ -1,4 +1,10 @@
 function sync_func(doc, oldDoc) {
+    // FIXME some time _deleted doc havn't type
+    // For the moment only return and don't process this case
+    if(doc._deleted && !doc.type && !oldDoc) {
+        return;
+    }
+
     // ########################
     // ########################
     // ##                    ##
@@ -15,6 +21,8 @@ function sync_func(doc, oldDoc) {
     var MISSION_STATUS = "mission_status";
     var TRACK = "track";
     var METADATA = "metadata";
+    // FIXME in some case we need that !
+    var DELETED_DOC_WHITOUT_TYPE = "ddwt";
 
     // TYPES DRIVER
     var TYPES_DRIVER = {
@@ -136,7 +144,7 @@ function sync_func(doc, oldDoc) {
             case UPDATING:
                 checkLocation(doc, oldDoc);
                 checkName(doc, oldDoc);
-                checkAddress(doc, oldDoc);
+                //checkAddress(doc, oldDoc);
                 // Adds an access to owner at his specific channel
                 for (var i = 0; i < ownersChannels.length; i++)
                     access([owners[i]], [ownersChannels[i]]);
@@ -162,6 +170,13 @@ function sync_func(doc, oldDoc) {
         }*/
         // Add current doc in all channels
         channel([missionStatusTypeChannel]);
+    }
+
+    // ######################
+    // DEFAULT MANAGER
+    // ######################
+    function default_manager(doc, oldDoc, params) {
+      // TODO
     }
 
     // ###################################
@@ -244,6 +259,8 @@ function sync_func(doc, oldDoc) {
         return location;
     }
 
+// REMOVE checkAddress function, this isn't mandatory
+/*
     function checkAddress(doc, oldDoc) {
         // Make sure that the address propery exists in the new doc :
         var address = doc.address;
@@ -274,7 +291,7 @@ function sync_func(doc, oldDoc) {
             });
         return address;
     }
-
+*/
     function checkName(doc, oldDoc) {
         if (!doc.name ||  typeof(doc.name) !== "string") {
             throw ({
@@ -322,6 +339,7 @@ function sync_func(doc, oldDoc) {
     // ##############################
     function checkAndGetType(doc, oldDoc) {
         var type = oldDoc ? oldDoc.type : doc.type;
+    
         if (!type || !TYPES_DRIVER[type]) {
             throw ({
                 forbidden: "Unknown document type"

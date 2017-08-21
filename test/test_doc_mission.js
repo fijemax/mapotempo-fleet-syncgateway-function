@@ -13,29 +13,45 @@ describe("Mission create update delete test", function() {
     // ######
     it("Create : 1- can create a mission document", function() {
         var doc = {
+            "address": {
+              "city": "Paris",
+              "country": "France",
+              "detail": "Pépinière éco-créative",
+              "postalcode": "33000",
+              "state": "Gironde",
+              "street": "9 Rue André Darbon"
+            },
+            "comment": "laisser le colis au gardein",
+            "company_id": "mapotempo_company",
             "delivery_date": "2017-07-21T16:22:27.348Z",
-            "company_id": "UIOAZHD4564DAZD",
+            "duration": 50,
             "location": {
-                "lat": 45.0,
-                "lon": 2.0
+              "lat": "40.0",
+              "lon": "-1.0"
             },
-            "address":  {
-                "street": "9 Rue André Darbon", // character varying(255),
-                "postalcode": "33000", // character varying(255),
-                "city": "Bordeaux", // character varying(255),
-                "state": "Gironde", // character varying
-                "country": "France", // character varying
-                "detail": "Pépinière éco-créative" // text
-            },
+            "mission_status_type_id": "Pending:7Cito9g5g5-defd-4b40-58g-9e33abg57185",
             "name": "test",
             "owners": ["static", "superman"],
+            "phone": "0600010203",
+            "reference": "ABCDEF",
+            "time_windows": [
+              {
+                "end": "2017-08-21T010:00:00Z",
+                "start": "2017-08-21T08:00:00Z"
+              },
+              {
+                "end": "2017-08-21T013:00:00Z",
+                "start": "2017-08-21T14:00:00Z"
+              }
+            ],
             "type": "mission",
-            "_id": "Mission_1534a8de-b412-49bc-97a8-3b535d131406"
+            "_rev": "74-5dafed6558915c015ac98f338382067a",
+            "_id": "Mission_68g95ac3-da6d-4b40-973b-9e3341879085"
         }
 
         testHelper.verifyDocumentCreated(
             doc, {
-                expectedRoles: ["UIOAZHD4564DAZD:mission:creating"],
+                expectedRoles: ["mapotempo_company:mission:creating"],
                 expectedUsers: ["static", "superman"]
             }, [{
                     expectedChannels: ["mission:static:20170721"],
@@ -50,86 +66,136 @@ describe("Mission create update delete test", function() {
 
     it("Create : 2- can't create a mission document with owners array empty", function() {
         var doc = {
+            "address": {
+              "city": "Paris",
+              "country": "France",
+              "detail": "Pépinière éco-créative",
+              "postalcode": "33000",
+              "state": "Gironde",
+              "street": "9 Rue André Darbon"
+            },
+            "comment": "laisser le colis au gardein",
+            "company_id": "mapotempo_company",
             "delivery_date": "2017-07-21T16:22:27.348Z",
-            "company_id": "UIOAZHD4564DAZD",
+            "duration": 50,
             "location": {
-                "lat": 45.0,
-                "lon": 2.0
+              "lat": "40.0",
+              "lon": "-1.0"
             },
-            "address":  {
-                "street": "9 Rue André Darbon", // character varying(255),
-                "postalcode": "33000", // character varying(255),
-                "city": "Bordeaux", // character varying(255),
-                "state": "Gironde", // character varying
-                "country": "France", // character varying
-                "detail": "Pépinière éco-créative" // text
-            },
+            "mission_status_type_id": "Pending:7Cito9g5g5-defd-4b40-58g-9e33abg57185",
             "name": "test",
             "owners": [],
+            // "owners": ["static", "superman"],
+            "phone": "0600010203",
+            "reference": "ABCDEF",
+            "time_windows": [
+              {
+                "end": "2017-08-21T010:00:00Z",
+                "start": "2017-08-21T08:00:00Z"
+              },
+              {
+                "end": "2017-08-21T013:00:00Z",
+                "start": "2017-08-21T14:00:00Z"
+              }
+            ],
             "type": "mission",
-            "_id": "Mission_1534a8de-b412-49bc-97a8-3b535d131406"
+            "_rev": "74-5dafed6558915c015ac98f338382067a",
+            "_id": "Mission_68g95ac3-da6d-4b40-973b-9e3341879085"
         }
 
         testHelper.verifyDocumentNotCreated(
             doc,
             "mission",
             "Document must have at least one owner", {
-                expectedRoles: ["UIOAZHD4564DAZD:mission:creating"],
+                expectedRoles: ["mapotempo_company:mission:creating"],
             }
         );
     });
 
     it("Create : 3- can't create a mission document without owners field", function() {
         var doc = {
+            "address": {
+              "city": "Paris",
+              "country": "France",
+              "detail": "Pépinière éco-créative",
+              "postalcode": "33000",
+              "state": "Gironde",
+              "street": "9 Rue André Darbon"
+            },
+            "comment": "laisser le colis au gardein",
+            "company_id": "mapotempo_company",
             "delivery_date": "2017-07-21T16:22:27.348Z",
-            "company_id": "UIOAZHD4564DAZD",
+            "duration": 50,
             "location": {
-                "lat": 45.0,
-                "lon": 2.0
+              "lat": "40.0",
+              "lon": "-1.0"
             },
-            "address":  {
-                "street": "9 Rue André Darbon", // character varying(255),
-                "postalcode": "33000", // character varying(255),
-                "city": "Bordeaux", // character varying(255),
-                "state": "Gironde", // character varying
-                "country": "France", // character varying
-                "detail": "Pépinière éco-créative" // text
-            },
+            "mission_status_type_id": "Pending:7Cito9g5g5-defd-4b40-58g-9e33abg57185",
             "name": "test",
             // "owners": ["static", "superman"],
+            "phone": "0600010203",
+            "reference": "ABCDEF",
+            "time_windows": [
+              {
+                "end": "2017-08-21T010:00:00Z",
+                "start": "2017-08-21T08:00:00Z"
+              },
+              {
+                "end": "2017-08-21T013:00:00Z",
+                "start": "2017-08-21T14:00:00Z"
+              }
+            ],
             "type": "mission",
-            "_id": "Mission_1534a8de-b412-49bc-97a8-3b535d131406"
+            "_rev": "74-5dafed6558915c015ac98f338382067a",
+            "_id": "Mission_68g95ac3-da6d-4b40-973b-9e3341879085"
         }
 
         testHelper.verifyDocumentNotCreated(
             doc,
             "mission",
             "Document must have owners", {
-                expectedRoles: ["UIOAZHD4564DAZD:mission:creating"],
+                expectedRoles: ["mapotempo_company:mission:creating"],
             }
         );
     });
 
-    it("Create : 4- can't create a mission document without delivery_date field", function() {
+    it("Create : 4- can't create a mission document with delivery_date field improperly formatted", function() {
         var doc = {
+            "address": {
+              "city": "Paris",
+              "country": "France",
+              "detail": "Pépinière éco-créative",
+              "postalcode": "33000",
+              "state": "Gironde",
+              "street": "9 Rue André Darbon"
+            },
+            "comment": "laisser le colis au gardein",
+            "company_id": "mapotempo_company",
             "delivery_date": "23 juin 1912",
-            "company_id": "UIOAZHD4564DAZD",
+            // "delivery_date": "2017-07-21T16:22:27.348Z",
+            "duration": 50,
             "location": {
-                "lat": 45.0,
-                "lon": 2.0
+              "lat": "40.0",
+              "lon": "-1.0"
             },
-            "address":  {
-                "street": "9 Rue André Darbon", // character varying(255),
-                "postalcode": "33000", // character varying(255),
-                "city": "Bordeaux", // character varying(255),
-                "state": "Gironde", // character varying
-                "country": "France", // character varying
-                "detail": "Pépinière éco-créative" // text
-            },
+            "mission_status_type_id": "Pending:7Cito9g5g5-defd-4b40-58g-9e33abg57185",
             "name": "test",
             "owners": ["static", "superman"],
+            "phone": "0600010203",
+            "reference": "ABCDEF",
+            "time_windows": [
+              {
+                "end": "2017-08-21T010:00:00Z",
+                "start": "2017-08-21T08:00:00Z"
+              },
+              {
+                "end": "2017-08-21T013:00:00Z",
+                "start": "2017-08-21T14:00:00Z"
+              }
+            ],
             "type": "mission",
-            "_id": "Mission_1534a8de-b412-49bc-97a8-3b535d131406"
+            "_rev": "74-5dafed6558915c015ac98f338382067a",
+            "_id": "Mission_68g95ac3-da6d-4b40-973b-9e3341879085"
         }
 
         testHelper.verifyDocumentNotCreated(
@@ -137,31 +203,47 @@ describe("Mission create update delete test", function() {
             "mission",
             "Document must have a delivery_date ISO8601 valid format", {
                 expectedUsers: ["static", "superman"],
-                expectedRoles: ["UIOAZHD4564DAZD:mission:creating"]
+                expectedRoles: ["mapotempo_company:mission:creating"]
             }
         );
     });
 
-    it("Create : 5- can't create a mission document with delivery_date field improperly formatted", function() {
+    it("Create : 5- can't create a mission document without delivery_date field", function() {
         var doc = {
+            "address": {
+              "city": "Paris",
+              "country": "France",
+              "detail": "Pépinière éco-créative",
+              "postalcode": "33000",
+              "state": "Gironde",
+              "street": "9 Rue André Darbon"
+            },
+            "comment": "laisser le colis au gardein",
+            "company_id": "mapotempo_company",
             // "delivery_date": "2017-07-21T16:22:27.348Z",
-            "company_id": "UIOAZHD4564DAZD",
+            "duration": 50,
             "location": {
-                "lat": 45.0,
-                "lon": 2.0
+              "lat": "40.0",
+              "lon": "-1.0"
             },
-            "address":  {
-                "street": "9 Rue André Darbon", // character varying(255),
-                "postalcode": "33000", // character varying(255),
-                "city": "Bordeaux", // character varying(255),
-                "state": "Gironde", // character varying
-                "country": "France", // character varying
-                "detail": "Pépinière éco-créative" // text
-            },
+            "mission_status_type_id": "Pending:7Cito9g5g5-defd-4b40-58g-9e33abg57185",
             "name": "test",
             "owners": ["static", "superman"],
+            "phone": "0600010203",
+            "reference": "ABCDEF",
+            "time_windows": [
+              {
+                "end": "2017-08-21T010:00:00Z",
+                "start": "2017-08-21T08:00:00Z"
+              },
+              {
+                "end": "2017-08-21T013:00:00Z",
+                "start": "2017-08-21T14:00:00Z"
+              }
+            ],
             "type": "mission",
-            "_id": "Mission_1534a8de-b412-49bc-97a8-3b535d131406"
+            "_rev": "74-5dafed6558915c015ac98f338382067a",
+            "_id": "Mission_68g95ac3-da6d-4b40-973b-9e3341879085"
         }
 
         testHelper.verifyDocumentNotCreated(
@@ -169,31 +251,47 @@ describe("Mission create update delete test", function() {
             "mission",
             "Document must have a delivery_date", {
                 expectedUsers: ["static", "superman"],
-                expectedRoles: ["UIOAZHD4564DAZD:mission:creating"]
+                expectedRoles: ["mapotempo_company:mission:creating"]
             }
         );
     });
 
     it("Create : 6- can't create a mission document whitout company_id", function() {
         var doc = {
+            "address": {
+              "city": "Paris",
+              "country": "France",
+              "detail": "Pépinière éco-créative",
+              "postalcode": "33000",
+              "state": "Gironde",
+              "street": "9 Rue André Darbon"
+            },
+            "comment": "laisser le colis au gardein",
+            // "company_id": "mapotempo_company",
             "delivery_date": "2017-07-21T16:22:27.348Z",
-            // "company_id": "UIOAZHD4564DAZD",
+            "duration": 50,
             "location": {
-                "lat": 45.0,
-                "lon": 2.0
+              "lat": "40.0",
+              "lon": "-1.0"
             },
-            "address":  {
-                "street": "9 Rue André Darbon", // character varying(255),
-                "postalcode": "33000", // character varying(255),
-                "city": "Bordeaux", // character varying(255),
-                "state": "Gironde", // character varying
-                "country": "France", // character varying
-                "detail": "Pépinière éco-créative" // text
-            },
+            "mission_status_type_id": "Pending:7Cito9g5g5-defd-4b40-58g-9e33abg57185",
             "name": "test",
-            "owners": ["static"],
+            "owners": ["static", "superman"],
+            "phone": "0600010203",
+            "reference": "ABCDEF",
+            "time_windows": [
+              {
+                "end": "2017-08-21T010:00:00Z",
+                "start": "2017-08-21T08:00:00Z"
+              },
+              {
+                "end": "2017-08-21T013:00:00Z",
+                "start": "2017-08-21T14:00:00Z"
+              }
+            ],
             "type": "mission",
-            "_id": "Mission_1534a8de-b412-49bc-97a8-3b535d131406"
+            "_rev": "74-5dafed6558915c015ac98f338382067a",
+            "_id": "Mission_68g95ac3-da6d-4b40-973b-9e3341879085"
         }
 
         testHelper.verifyDocumentNotCreated(
@@ -207,95 +305,127 @@ describe("Mission create update delete test", function() {
 
     it("Create : 7- can't create a mission document without location field", function() {
         var doc = {
-            "delivery_date": "2017-07-21T16:22:27.348Z",
-            "company_id": "UIOAZHD4564DAZD",
-            /*"location": {
-              "lat": 45.0,
-              "lon": 2.0
-            },*/
-            "address":  {
-                "street": "9 Rue André Darbon", // character varying(255),
-                "postalcode": "33000", // character varying(255),
-                "city": "Bordeaux", // character varying(255),
-                "state": "Gironde", // character varying
-                "country": "France", // character varying
-                "detail": "Pépinière éco-créative" // text
+            "address": {
+              "city": "Paris",
+              "country": "France",
+              "detail": "Pépinière éco-créative",
+              "postalcode": "33000",
+              "state": "Gironde",
+              "street": "9 Rue André Darbon"
             },
+            "comment": "laisser le colis au gardein",
+            "company_id": "mapotempo_company",
+            "delivery_date": "2017-07-21T16:22:27.348Z",
+            "duration": 50,
+            //"location": {
+            //  "lat": "40.0",
+            //  "lon": "-1.0"
+            // },
+            "mission_status_type_id": "Pending:7Cito9g5g5-defd-4b40-58g-9e33abg57185",
             "name": "test",
             "owners": ["static", "superman"],
+            "phone": "0600010203",
+            "reference": "ABCDEF",
+            "time_windows": [
+              {
+                "end": "2017-08-21T010:00:00Z",
+                "start": "2017-08-21T08:00:00Z"
+              },
+              {
+                "end": "2017-08-21T013:00:00Z",
+                "start": "2017-08-21T14:00:00Z"
+              }
+            ],
             "type": "mission",
-            "_id": "Mission_1534a8de-b412-49bc-97a8-3b535d131406"
+            "_rev": "74-5dafed6558915c015ac98f338382067a",
+            "_id": "Mission_68g95ac3-da6d-4b40-973b-9e3341879085"
         }
 
         testHelper.verifyDocumentNotCreated(
             doc,
             "mission",
             "Document must have a location", {
-                expectedRoles: ["UIOAZHD4564DAZD:mission:creating"],
+                expectedRoles: ["mapotempo_company:mission:creating"],
                 expectedUsers: ["static", "superman"]
             });
     });
 
     it("Create : 8- can't create a mission document without name field", function() {
         var doc = {
+            "address": {
+              "city": "Paris",
+              "country": "France",
+              "detail": "Pépinière éco-créative",
+              "postalcode": "33000",
+              "state": "Gironde",
+              "street": "9 Rue André Darbon"
+            },
+            "comment": "laisser le colis au gardein",
+            "company_id": "mapotempo_company",
             "delivery_date": "2017-07-21T16:22:27.348Z",
-            "company_id": "UIOAZHD4564DAZD",
+            "duration": 50,
             "location": {
-                "lat": 45.0,
-                "lon": 2.0
+              "lat": "40.0",
+              "lon": "-1.0"
             },
-            "address":  {
-                "street": "9 Rue André Darbon", // character varying(255),
-                "postalcode": "33000", // character varying(255),
-                "city": "Bordeaux", // character varying(255),
-                "state": "Gironde", // character varying
-                "country": "France", // character varying
-                "detail": "Pépinière éco-créative" // text
-            },
+            "mission_status_type_id": "Pending:7Cito9g5g5-defd-4b40-58g-9e33abg57185",
             // "name": "test",
             "owners": ["static", "superman"],
+            "phone": "0600010203",
+            "reference": "ABCDEF",
+            "time_windows": [
+              {
+                "end": "2017-08-21T010:00:00Z",
+                "start": "2017-08-21T08:00:00Z"
+              },
+              {
+                "end": "2017-08-21T013:00:00Z",
+                "start": "2017-08-21T14:00:00Z"
+              }
+            ],
             "type": "mission",
-            "_id": "Mission_1534a8de-b412-49bc-97a8-3b535d131406"
+            "_rev": "74-5dafed6558915c015ac98f338382067a",
+            "_id": "Mission_68g95ac3-da6d-4b40-973b-9e3341879085"
         }
 
         testHelper.verifyDocumentNotCreated(
             doc,
             "mission",
             "Document must have a name", {
-                expectedRoles: ["UIOAZHD4564DAZD:mission:creating"],
+                expectedRoles: ["mapotempo_company:mission:creating"],
                 expectedUsers: ["static", "superman"]
             });
     });
 
-    it("Create : 9- can't create a mission document without address field", function() {
+    it("Create : 9- can create a mission document without address field", function() {
         var doc = {
+            "company_id": "mapotempo_company",
             "delivery_date": "2017-07-21T16:22:27.348Z",
-            "company_id": "UIOAZHD4564DAZD",
             "location": {
-                "lat": 45.0,
-                "lon": 2.0
+              "lat": "40.0",
+              "lon": "-1.0"
             },
-            /*"address" : {
-               "street": "9 Rue André Darbon",         // character varying(255),
-               "postalcode": "33000",                  // character varying(255),
-               "city": "Bordeaux",                     // character varying(255),
-               "state": "Gironde",                     // character varying
-               "country": "France",                    // character varying
-               "detail": "Pépinière éco-créative"      // text
-             },*/
+            "mission_status_type_id": "Pending:7Cito9g5g5-defd-4b40-58g-9e33abg57185",
             "name": "test",
             "owners": ["static", "superman"],
             "type": "mission",
-            "_id": "Mission_1534a8de-b412-49bc-97a8-3b535d131406"
+            "_rev": "74-5dafed6558915c015ac98f338382067a",
+            "_id": "Mission_68g95ac3-da6d-4b40-973b-9e3341879085"
         }
 
-        testHelper.verifyDocumentNotCreated(
-            doc,
-            "mission",
-            "Document must have an address", {
-                expectedRoles: ["UIOAZHD4564DAZD:mission:creating"],
+        testHelper.verifyDocumentCreated(
+            doc, {
+                expectedRoles: ["mapotempo_company:mission:creating"],
                 expectedUsers: ["static", "superman"]
-            });
+            }, [{
+                    expectedChannels: ["mission:static:20170721"],
+                    expectedUsers: ["static"]
+                },
+                {
+                    expectedChannels: ["mission:superman:20170721"],
+                    expectedUsers: ["superman"]
+                }
+            ]);
     });
 
     // ####################
