@@ -40,6 +40,9 @@ function sync_func(doc, oldDoc) {
     var UPDATING = "updating";
     var DELETING = "deleting";
 
+    // ROLE SEPARATOR
+    var SEPARATOR = ".";
+
     // ############################
     // ############################
     // ##                        ##
@@ -65,7 +68,7 @@ function sync_func(doc, oldDoc) {
     params.type = checkAndGetType(doc, oldDoc);
     params.action = checkAndGetAction(doc, oldDoc);
     params.company_id = getCompanyID(doc, oldDoc, params.type);
-    params.role = getRole(params.company_id, params.type, params.action);
+    params.role = getRoleNeed(params.company_id, params.type, params.action);
 
     // Check role and company
     requireRole(params.role);
@@ -114,6 +117,10 @@ function sync_func(doc, oldDoc) {
         switch (params.action) {
             case CREATING:
             case UPDATING:
+                var userRoles = makeUserRoles(doc, oldDoc, params.company_id);
+                // FIXME ONLY SUPER USER CAN UPDATE ROLES !!!!!!!
+                role([user], userRoles);
+
                 access([user], [channelUser]);
                 access([user], [companyChannel]);
                 access([user], [missionStatusTypeChannel]);
@@ -334,9 +341,9 @@ function sync_func(doc, oldDoc) {
         return owner_channels;
     }
 
-    // ##############################
-    // Action Company and Role Helper
-    // ##############################
+    // #####################
+    // Action Company Helper
+    // #####################
     function checkAndGetType(doc, oldDoc) {
         var type = oldDoc ? oldDoc.type : doc.type;
     
@@ -395,8 +402,24 @@ function sync_func(doc, oldDoc) {
                 }
     }
 
-    // ROLES
-    function getRole(company, type, action) {
-        return company + ":" + type + ":" + action;
+    // ###########
+    // Role Helper
+    // ###########
+
+    function getRoleNeed(company_id, type, action) {
+        return company_id + SEPARATOR + type + SEPARATOR + action;
     }
-} 
+
+    function makeUserRoles(doc, oldDoc, company_id) {
+        var roles = oldDoc ? oldDoc.roles : doc.roles;
+        var res = [];
+        if(roles && Array.isArray(roles)) {
+          for (var i = 0; i < roles.length; i++) {
+              res[i] = "role:" + company_id + SEPARATOR + roles[i];
+          }
+        } else {
+            res[0] = "role:default";
+        }
+        return res;
+    }
+}

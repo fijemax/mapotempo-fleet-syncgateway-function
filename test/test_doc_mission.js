@@ -51,13 +51,15 @@ describe("Mission create update delete test", function() {
 
         testHelper.verifyDocumentCreated(
             doc, {
-                expectedRoles: ["mapotempo_company:mission:creating"],
+                expectedRoles: ["mapotempo_company.mission.creating"],
                 expectedUsers: ["static", "superman"]
             }, [{
+                    expectedType: "channel",
                     expectedChannels: ["mission:static:20170721"],
                     expectedUsers: ["static"]
                 },
                 {
+                    expectedType: "channel",
                     expectedChannels: ["mission:superman:20170721"],
                     expectedUsers: ["superman"]
                 }
@@ -107,7 +109,7 @@ describe("Mission create update delete test", function() {
             doc,
             "mission",
             "Document must have at least one owner", {
-                expectedRoles: ["mapotempo_company:mission:creating"],
+                expectedRoles: ["mapotempo_company.mission.creating"],
             }
         );
     });
@@ -154,7 +156,7 @@ describe("Mission create update delete test", function() {
             doc,
             "mission",
             "Document must have owners", {
-                expectedRoles: ["mapotempo_company:mission:creating"],
+                expectedRoles: ["mapotempo_company.mission.creating"],
             }
         );
     });
@@ -203,7 +205,7 @@ describe("Mission create update delete test", function() {
             "mission",
             "Document must have a delivery_date ISO8601 valid format", {
                 expectedUsers: ["static", "superman"],
-                expectedRoles: ["mapotempo_company:mission:creating"]
+                expectedRoles: ["mapotempo_company.mission.creating"]
             }
         );
     });
@@ -251,7 +253,7 @@ describe("Mission create update delete test", function() {
             "mission",
             "Document must have a delivery_date", {
                 expectedUsers: ["static", "superman"],
-                expectedRoles: ["mapotempo_company:mission:creating"]
+                expectedRoles: ["mapotempo_company.mission.creating"]
             }
         );
     });
@@ -298,7 +300,7 @@ describe("Mission create update delete test", function() {
             doc,
             "mission",
             "Document must have a company_id", {
-                expectedRoles: ["undefined:mission:creating"],
+                expectedRoles: ["undefined.mission.creating"],
             }
         );
     });
@@ -345,7 +347,7 @@ describe("Mission create update delete test", function() {
             doc,
             "mission",
             "Document must have a location", {
-                expectedRoles: ["mapotempo_company:mission:creating"],
+                expectedRoles: ["mapotempo_company.mission.creating"],
                 expectedUsers: ["static", "superman"]
             });
     });
@@ -392,7 +394,7 @@ describe("Mission create update delete test", function() {
             doc,
             "mission",
             "Document must have a name", {
-                expectedRoles: ["mapotempo_company:mission:creating"],
+                expectedRoles: ["mapotempo_company.mission.creating"],
                 expectedUsers: ["static", "superman"]
             });
     });
@@ -415,13 +417,15 @@ describe("Mission create update delete test", function() {
 
         testHelper.verifyDocumentCreated(
             doc, {
-                expectedRoles: ["mapotempo_company:mission:creating"],
+                expectedRoles: ["mapotempo_company.mission.creating"],
                 expectedUsers: ["static", "superman"]
             }, [{
+                    expectedType: "channel",
                     expectedChannels: ["mission:static:20170721"],
                     expectedUsers: ["static"]
                 },
                 {
+                    expectedType: "channel",
                     expectedChannels: ["mission:superman:20170721"],
                     expectedUsers: ["superman"]
                 }
@@ -435,7 +439,7 @@ describe("Mission create update delete test", function() {
     it("Update : 1- can update the delivery_date field mission document", function() {
         var oldDoc = {
             "delivery_date": "2017-07-21T16:22:27.348Z",
-            "company_id": "UIOAZHD4564DAZD",
+            "company_id": "mapotempo_company",
             "location": {
                 "lat": 45.0,
                 "lon": 2.0
@@ -460,13 +464,15 @@ describe("Mission create update delete test", function() {
         testHelper.verifyDocumentReplaced(
             doc,
             oldDoc, {
-                expectedRoles: ["UIOAZHD4564DAZD:mission:updating"],
+                expectedRoles: ["mapotempo_company.mission.updating"],
                 expectedUsers: ["static", "superman"]
             }, [{
+                    expectedType: "channel",
                     expectedUsers: ["static"],
                     expectedChannels: ["mission:static:20170725"]
                 },
                 {
+                    expectedType: "channel",
                     expectedUsers: ["superman"],
                     expectedChannels: ["mission:superman:20170725"]
                 }
@@ -476,7 +482,7 @@ describe("Mission create update delete test", function() {
     it("Update : 2- can update the location field mission document", function() {
         var oldDoc = {
             "delivery_date": "2017-07-21T16:22:27.348Z",
-            "company_id": "UIOAZHD4564DAZD",
+            "company_id": "mapotempo_company",
             "location": {
                 "lat": 45.0,
                 "lon": 2.0
@@ -502,13 +508,15 @@ describe("Mission create update delete test", function() {
         testHelper.verifyDocumentReplaced(
             doc,
             oldDoc, {
-                expectedRoles: ["UIOAZHD4564DAZD:mission:updating"],
+                expectedRoles: ["mapotempo_company.mission.updating"],
                 expectedUsers: ["static", "superman"]
             }, [{
+                    expectedType: "channel",
                     expectedUsers: ["static"],
                     expectedChannels: ["mission:static:20170721"]
                 },
                 {
+                    expectedType: "channel",
                     expectedUsers: ["superman"],
                     expectedChannels: ["mission:superman:20170721"]
                 }
@@ -518,7 +526,7 @@ describe("Mission create update delete test", function() {
     it("Update : 3- can update the name field mission document", function() {
         var oldDoc = {
             "delivery_date": "2017-07-21T16:22:27.348Z",
-            "company_id": "UIOAZHD4564DAZD",
+            "company_id": "mapotempo_company",
             "location": {
                 "lat": 45.0,
                 "lon": 2.0
@@ -543,13 +551,15 @@ describe("Mission create update delete test", function() {
         testHelper.verifyDocumentReplaced(
             doc,
             oldDoc, {
-                expectedRoles: ["UIOAZHD4564DAZD:mission:updating"],
+                expectedRoles: ["mapotempo_company.mission.updating"],
                 expectedUsers: ["static", "superman"]
             }, [{
+                    expectedType: "channel",
                     expectedUsers: ["static"],
                     expectedChannels: ["mission:static:20170721"]
                 },
                 {
+                    expectedType: "channel",
                     expectedUsers: ["superman"],
                     expectedChannels: ["mission:superman:20170721"]
                 }
@@ -559,7 +569,7 @@ describe("Mission create update delete test", function() {
     it("Update : 4- can't update the company_id mission field", function() {
         var oldDoc = {
             "delivery_date": "2017-07-21T16:22:27.348Z",
-            "company_id": "UIOAZHD4564DAZD",
+            "company_id": "mapotempo_company",
             "location": {
                 "lat": 45.0,
                 "lon": 2.0
@@ -586,14 +596,14 @@ describe("Mission create update delete test", function() {
             oldDoc,
             "mission",
             "Document ID can't be modify", {
-                expectedRoles: ["UIOAZHD4564DAZD:mission:updating"]
+                expectedRoles: ["mapotempo_company.mission.updating"]
             });
     });
 
     it("Update : 5- can update the owners field mission document", function() {
         var oldDoc = {
             "delivery_date": "2017-07-21T16:22:27.348Z",
-            "company_id": "UIOAZHD4564DAZD",
+            "company_id": "mapotempo_company",
             "location": {
                 "lat": 45.0,
                 "lon": 2.0
@@ -618,13 +628,15 @@ describe("Mission create update delete test", function() {
         testHelper.verifyDocumentReplaced(
             doc,
             oldDoc, {
-                expectedRoles: ["UIOAZHD4564DAZD:mission:updating"],
+                expectedRoles: ["mapotempo_company.mission.updating"],
                 expectedUsers: ["static", "superman"]
             }, [{
+                    expectedType: "channel",
                     expectedUsers: ["static"],
                     expectedChannels: ["mission:static:20170721"]
                 },
                 {
+                    expectedType: "channel",
                     expectedUsers: ["superman"],
                     expectedChannels: ["mission:superman:20170721"]
                 }
@@ -634,7 +646,7 @@ describe("Mission create update delete test", function() {
     it("Update : 6- can update the address field mission document", function() {
         var oldDoc = {
             "delivery_date": "2017-07-21T16:22:27.348Z",
-            "company_id": "UIOAZHD4564DAZD",
+            "company_id": "mapotempo_company",
             "location": {
                 "lat": 45.0,
                 "lon": 2.0
@@ -663,13 +675,15 @@ describe("Mission create update delete test", function() {
         testHelper.verifyDocumentReplaced(
             doc,
             oldDoc, {
-                expectedRoles: ["UIOAZHD4564DAZD:mission:updating"],
+                expectedRoles: ["mapotempo_company.mission.updating"],
                 expectedUsers: ["static", "superman"]
             }, [{
+                    expectedType: "channel",
                     expectedUsers: ["static"],
                     expectedChannels: ["mission:static:20170721"]
                 },
                 {
+                    expectedType: "channel",
                     expectedUsers: ["superman"],
                     expectedChannels: ["mission:superman:20170721"]
                 }
@@ -683,7 +697,7 @@ describe("Mission create update delete test", function() {
     it("Delete : 1- can delete a mission document", function() {
         var oldDoc = {
             "delivery_date": "2017-07-21T16:22:27.348Z",
-            "company_id": "UIOAZHD4564DAZD",
+            "company_id": "mapotempo_company",
             "location": {
                 "lat": 45.0,
                 "lon": 2.0
@@ -704,7 +718,7 @@ describe("Mission create update delete test", function() {
 
         testHelper.verifyDocumentDeleted(
             oldDoc, {
-                expectedRoles: ["UIOAZHD4564DAZD:mission:deleting"],
+                expectedRoles: ["mapotempo_company.mission.deleting"],
                 expectedUsers: ["static", "superman"]
             });
     });

@@ -21,8 +21,8 @@ describe("Company create update delete test", function() {
 
         testHelper.verifyDocumentCreated(
             doc, {
-                expectedRoles: ["company_xxxxxxxx:company:creating"],
-                //                expectedChannels: ["company:company_xxxxxxxx"]
+                expectedRoles: ["company_xxxxxxxx.company.creating"],
+                // expectedChannels: ["company:company_xxxxxxxx"]
             });
     })
 })
