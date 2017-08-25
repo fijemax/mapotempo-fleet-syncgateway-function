@@ -42,7 +42,8 @@ for example the  role need for update a mission type document is :
 TODO
 
 ## Documents Models
-### Company document
+### Company
+##### Model
 ```json
  { 
 	"_id": "company_XXXXX_XXXXX_XXXX_XXXXX", 
@@ -50,6 +51,12 @@ TODO
 	"name": "mapotempo"
  }
 ```
+##### On Create
+	RequireRole : company_id.company.creating
+##### On Update
+	RequireRole : company_id.company.updating
+##### On Delete
+	RequireRole : company_id.company.deleting
 
 ### User document
 ```json
@@ -61,6 +68,16 @@ TODO
   "_id": "user_de20ef854f96c00fe46089d16f0554be"
 }
 ```
+##### On Create
+	RequireRole : company_id.user.creating
+##### On Update
+	RequireRole : company_id.user.updating
+##### On Delete
+	RequireRole : company_id.user.deleting
+##### Generate and  assign channels
+	`user` -> `user:[user]`
+	`user` -> `company:[company_id]`
+	`user` -> `mission_status_type:[company_id]`
 
 ### Mission document
 ```json
@@ -100,6 +117,15 @@ TODO
   "_id": "mission_fff3e0a2-d250-416e-badb-ded0252da4bd"
  }
 ```
+##### On Create
+	RequireRole : company_id.mission.creating
+##### On Update
+	RequireRole : company_id.mission.updating
+##### On Delete
+	RequireRole : company_id.mission.deleting
+##### Generate and  assign channels
+	`owners` -> `mission:[owner]:[yyyyMMdd]`
+	note : yyyyMMdd is a date generate from delivery_date iso date
 
 ### Mission status type document
 ```json
@@ -124,4 +150,12 @@ TODO
   "_id": "status_completed:lalal"
 }
 ```
+##### On Create
+	RequireRole : company_id.mission_status_type.creating
+##### On Update
+	RequireRole : company_id.mission_status_type.updating
+##### On Delete
+	RequireRole : company_id.mission_status_type.deleting
+##### Generate and  assign channels
+	`owners` -> `mission_status_type:[company_id]`
 
