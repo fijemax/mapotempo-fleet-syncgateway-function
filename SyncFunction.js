@@ -21,18 +21,16 @@ function sync_func(doc, oldDoc) {
     var MISSION_STATUS = "mission_status";
     var TRACK = "track";
     var METADATA = "metadata";
-    // FIXME in some case we need that !
-    var DELETED_DOC_WHITOUT_TYPE = "ddwt";
 
     // TYPES DRIVER
     var TYPES_DRIVER = {
-        "company": company,
-        "user": user,
-        "mission": mission,
-        "mission_status_type": mission_status_type,
-        "mission_status": "",
-        "track": "",
-        "metadata": ""
+        company: company,
+        user: user,
+        mission: mission,
+        mission_status_type: mission_status_type,
+        mission_status: "",
+        track: "",
+        metadata: ""
     }
 
     // ACTIONS CONST
@@ -40,28 +38,29 @@ function sync_func(doc, oldDoc) {
     var UPDATING = "updating";
     var DELETING = "deleting";
 
-    // ROLE SEPARATOR
-    var SEPARATOR = ".";
+    // SEPARATOR
+    var ROLE_SEPARATOR = ".";
+    var CHANNEL_SEPARATOR = ":";
 
-    // ############################
-    // ############################
-    // ##                        ##
-    // ##  CALL THE MAIN ROOTER  ##
-    // ##                        ##
-    // ############################
-    // ############################
+    // ######################
+    // ######################
+    // ##                  ##
+    // ##  PREPARE PARAMS  ##
+    // ##                  ##
+    // ######################
+    // ######################
 
     // *****************************************************************************************************************************************
     // * params : 'type', 'action' and 'role' are accessible for all the functions                                                             *
     // *  type       -> type is a string format extrat from doc.type, it is MANDATORY and it must be one of the key in TYPES_DRIVER            *
     // *  action     -> "action" is the current action perfomed by the user on the document                                                    *
-    // *  role       -> role is a string format as that "type:action" if the action needed a role to be performed it is this                   *
     // *  company_id -> company_id is a id string format, we can't assure in the sync function that the company really exist in the bucket ... *
+    // *  role       -> role is a string format as that "company_id:type:action" if the action needed a role to be performed it is this        *
     // *****************************************************************************************************************************************
     var params = {
-        type: "unknow", // The type of document
-        action: "unknow", // The action being performed
-        role: "unknow", // The role need to perform the action
+        type: "unknow",      // The type of document
+        action: "unknow",    // The action being performed
+        role: "unknow",      // The role need to perform the action
         company_id: "unknow" // The company id
     }
 
@@ -70,11 +69,18 @@ function sync_func(doc, oldDoc) {
     params.company_id = getCompanyID(doc, oldDoc, params.type);
     params.role = getRoleNeed(params.company_id, params.type, params.action);
 
+    // #######################
+    // #######################
+    // ##                   ##
+    // ##  CALL THE DRIVER  ##
+    // ##                   ##
+    // #######################
+    // #######################
+
     // Check role and company
     requireRole(params.role);
     checkCompanyID(doc, oldDoc, params.type);
 
-    // Chech type
     TYPES_DRIVER[params.type](doc, oldDoc, params);
 
     // #######################################
@@ -310,15 +316,15 @@ function sync_func(doc, oldDoc) {
     // Channel Factory
     // ###############
     function makeCompanyChannel(company_id) {
-        return COMPANY + ":" + company_id;
+        return COMPANY + CHANNEL_SEPARATOR + company_id;
     }
 
     function makeMissionStatusTypeChannel(company_id) {
-        return MISSION_STATUS_TYPE + ":" + company_id;
+        return MISSION_STATUS_TYPE + CHANNEL_SEPARATOR + company_id;
     }
 
     function makeUserChannel(user) {
-        return USER + ":" + user;
+        return USER + CHANNEL_SEPARATOR + user;
     }
 
     function makeMissionChannels(owners, delivery_date) {
@@ -336,14 +342,14 @@ function sync_func(doc, oldDoc) {
         var owner_channels = [];
         for (var i = 0; i < owners.length; i++) {
             // Create channel patern [type:owner:yyyyMMdd]
-            owner_channels[i] = MISSION + ":" + owners[i] + ":" + channel_date;
+            owner_channels[i] = MISSION + CHANNEL_SEPARATOR + owners[i] + CHANNEL_SEPARATOR + channel_date;
         }
         return owner_channels;
     }
 
-    // #####################
-    // Action Company Helper
-    // #####################
+    // ######################
+    // Action and Type Helper
+    // ######################
     function checkAndGetType(doc, oldDoc) {
         var type = oldDoc ? oldDoc.type : doc.type;
     
@@ -373,6 +379,10 @@ function sync_func(doc, oldDoc) {
         else
             return UPDATING;
     }
+
+    // #################
+    // company_id Helper
+    // #################
 
     function getCompanyID(doc, oldDoc, type) {
         if (type === "company")
@@ -407,7 +417,7 @@ function sync_func(doc, oldDoc) {
     // ###########
 
     function getRoleNeed(company_id, type, action) {
-        return company_id + SEPARATOR + type + SEPARATOR + action;
+        return company_id + ROLE_SEPARATOR + type + ROLE_SEPARATOR + action;
     }
 
     function makeUserRoles(doc, oldDoc, company_id) {
@@ -415,7 +425,7 @@ function sync_func(doc, oldDoc) {
         var res = [];
         if(roles && Array.isArray(roles)) {
           for (var i = 0; i < roles.length; i++) {
-              res[i] = "role:" + company_id + SEPARATOR + roles[i];
+              res[i] = "role:" + company_id + ROLE_SEPARATOR + roles[i];
           }
         } else {
             res[0] = "role:default";
