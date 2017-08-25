@@ -3,16 +3,18 @@
 ---
 ## Description
 The sync function ensure the security and manages users channels and roles.
-This documentation describe the sync function behaviors  on every Sync/Couchbase Document.
+This documentation describe the sync function behaviors that occurs on every Sync/Couchbase Document.
 ## Documents Base Format
 #### Base
 A base format is required for every document that analyzed by the sync function. All document who don't respect the base format will be rejecte.
 
-> { 
-	"_id": "type_hash", 
-	"type": "type",
-	"company_id": "company_hash"
-> }
+```json
+{ 
+"_id": "type_hash", 
+"type": "type",
+"company_id": "company_hash"
+}
+```
 
 #### Type
 The type field is used to dispatch the document in the appropriate specific function.
@@ -94,7 +96,7 @@ TODO
 	  "start": "2017-08-23T13:00:00.000Z",
 	  "end": "2017-08-23T17:00:00.000Z",
   }
-  ]
+  ],
   "_id": "mission_fff3e0a2-d250-416e-badb-ded0252da4bd"
  }
 ```
