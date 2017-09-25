@@ -92,7 +92,7 @@ TODO
   },
   "comment": "Mapotempo est une startup qui édite des solutions web d’optimisation de tournées, innovantes et libres.",
   "company_id": "company_XXXXX_XXXXX_XXXX_XXXXX",
-  "delivery_date": "2017-08-23T18:43:56.150Z",
+  "date": "2017-08-23T18:43:56.150Z",
   "location": {
     "lat": "-0.5680988",
     "lon": "44.8547927"
@@ -108,10 +108,10 @@ TODO
   "type": "mission",
   "time_windows": [{
 	  "start": "2017-08-23T8:00:00.000Z",
-	  "end": "2017-08-23T12:00:00.000Z",
+	  "end": "2017-08-23T12:00:00.000Z"
   }, {
 	  "start": "2017-08-23T13:00:00.000Z",
-	  "end": "2017-08-23T17:00:00.000Z",
+	  "end": "2017-08-23T17:00:00.000Z"
   }
   ],
   "_id": "mission_fff3e0a2-d250-416e-badb-ded0252da4bd"
@@ -125,7 +125,7 @@ TODO
 	RequireRole : company_id.mission.deleting
 ##### Generate and  assign channels
 	`owners` -> `mission:[owner]:[yyyyMMdd]`
-	note : yyyyMMdd is a date generate from delivery_date iso date
+	note : yyyyMMdd is a date generate from iso 8601 date
 
 ### Mission status type document
 ```json
