@@ -106,7 +106,6 @@ function sync_func(doc, oldDoc) {
                 break;
             default:
         }
-
         // Add current doc in all channels
         channel([companyChannel]);
     }
@@ -148,9 +147,9 @@ function sync_func(doc, oldDoc) {
         var owners = checkOwners(doc, oldDoc);
         requireUser(owners);
 
-        // Check delivery date and make channels
-        var delivery_date = checkDeliveryDate(doc, oldDoc);
-        var ownersChannels = makeMissionChannels(owners, delivery_date);
+        // Check date and make channels
+        var date = checkDate(doc, oldDoc);
+        var ownersChannels = makeMissionChannels(owners, date);
 
         switch (params.action) {
             case CREATING:
@@ -237,22 +236,22 @@ function sync_func(doc, oldDoc) {
         return owners;
     }
 
-    function checkDeliveryDate(doc, oldDoc) {
+    function checkDate(doc, oldDoc) {
         // Make sure that the checkDeliveryDate propery exists:
-        var delivery_date = doc ? doc.delivery_date : oldDoc.delivery_date;
-        // On test le cas ou delivery_date est null pour prendre celui du oldDoc (pour la suppression)
-        delivery_date = (!delivery_date && oldDoc) ? oldDoc.delivery_date : delivery_date;
+        var date = doc ? doc.date : oldDoc.date;
+        // On test le cas ou date est null pour prendre celui du oldDoc (pour la suppression)
+        date = (!date && oldDoc) ? oldDoc.date : date;
 
-        if (!delivery_date) {
+        if (!date) {
             throw ({
-                forbidden: "Document must have a delivery_date"
+                forbidden: "Document must have a date"
             });
         }
-        if (isNaN(Date.parse(delivery_date)))
+        if (isNaN(Date.parse(date)))
             throw ({
-                forbidden: "Document must have a delivery_date ISO8601 valid format"
+                forbidden: "Document must have a date ISO8601 valid format"
             });
-        return delivery_date;
+        return date;
     }
 
     function checkLocation(doc, oldDoc) {
@@ -327,12 +326,12 @@ function sync_func(doc, oldDoc) {
         return USER + CHANNEL_SEPARATOR + user;
     }
 
-    function makeMissionChannels(owners, delivery_date) {
+    function makeMissionChannels(owners, date) {
         // Date format yyyyMMdd for channel
-        var timestamp = Date.parse(delivery_date);
+        var timestamp = Date.parse(date);
         if (isNaN(timestamp))
             throw ({
-                forbidden: "Document must have a delivery_date ISO8601 valid format"
+                forbidden: "Document must have a date ISO8601 valid format"
             });
         var date = new Date(timestamp);
         var channel_date = "" + date.getFullYear() +
