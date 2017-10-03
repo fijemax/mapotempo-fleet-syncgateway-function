@@ -29,7 +29,7 @@ function sync_func(doc, oldDoc) {
         mission: mission,
         mission_status_type: mission_status_type,
         mission_status: "",
-        track: "",
+        track: track,
         metadata: ""
     }
 
@@ -182,6 +182,19 @@ function sync_func(doc, oldDoc) {
         }*/
         // Add current doc in all channels
         channel([missionStatusTypeChannel]);
+    }
+
+    // ######################
+    // TRACK MANAGER
+    // ######################
+    function track(doc, oldDoc, params) {
+    }
+
+    // ######################
+    // DEFAULT MANAGER
+    // ######################
+    function default_manager(doc, oldDoc, params) {
+      // TODO
     }
 
     // ######################
