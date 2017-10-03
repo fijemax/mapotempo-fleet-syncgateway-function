@@ -20,6 +20,7 @@ function sync_func(doc, oldDoc) {
     var MISSION_STATUS_TYPE = "mission_status_type";
     var MISSION_STATUS = "mission_status";
     var TRACK = "track";
+    var CURRENT_LOCATION = "current_location";
     var METADATA = "metadata";
 
     // TYPES DRIVER
@@ -30,6 +31,7 @@ function sync_func(doc, oldDoc) {
         mission_status_type: mission_status_type,
         mission_status: "",
         track: track,
+        current_location: current_location,
         metadata: ""
     }
 
@@ -191,9 +193,9 @@ function sync_func(doc, oldDoc) {
     }
 
     // ######################
-    // DEFAULT MANAGER
+    // CURRENT LOCATION MANAGER
     // ######################
-    function default_manager(doc, oldDoc, params) {
+    function current_location(doc, oldDoc, params) {
       // TODO
     }
 
