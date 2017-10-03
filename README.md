@@ -246,4 +246,4 @@ TODO
 ##### On Delete
 	RequireRole : [company_id].curent_location.deleting
 ##### Generate and  assign channels
-	`owners` -> `curent_location:[owner]:[yyyyMMdd]`
+	`owners` -> `curent_location:[owner]`
