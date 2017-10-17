@@ -116,21 +116,19 @@ function sync_func(doc, oldDoc) {
     // USER MANAGER
     // ##############
     function user(doc, oldDoc, params) {
-        var user = checkUser(doc, oldDoc);
-        var channelUser = makeUserChannel(user);
+        var sync_user = checkSyncUser(doc, oldDoc);
+        var channelUser = makeUserChannel(sync_user);
         var companyChannel = makeCompanyChannel(params.company_id);
         var missionStatusTypeChannel = makeMissionStatusTypeChannel(params.company_id);
-
+        // TODO var missionStatusActionChannel = makeMissionStatusTypeChannel(params.company_id);
         switch (params.action) {
             case CREATING:
             case UPDATING:
                 var userRoles = makeUserRoles(doc, oldDoc, params.company_id);
-                // FIXME ONLY SUPER USER CAN UPDATE ROLES !!!!!!!
-                role([user], userRoles);
-
-                access([user], [channelUser]);
-                access([user], [companyChannel]);
-                access([user], [missionStatusTypeChannel]);
+                role([sync_user], userRoles);
+                access([sync_user], [channelUser]);
+                access([sync_user], [companyChannel]);
+                access([sync_user], [missionStatusTypeChannel]);
                 break;
             case DELETING:
                 break;
@@ -138,7 +136,6 @@ function sync_func(doc, oldDoc) {
         }
 
         channel([channelUser]);
-        // requireAccess([channelUser]);
     }
 
     // ###############
@@ -146,29 +143,25 @@ function sync_func(doc, oldDoc) {
     // ###############
     function mission(doc, oldDoc, params) {
         // Check owners
-        var owners = checkOwners(doc, oldDoc);
-        requireUser(owners);
+        var sync_user = checkSyncUser(doc, oldDoc);
+        requireUser(sync_user);
 
         // Check date and make channels
         var date = checkDate(doc, oldDoc);
-        var ownersChannels = makeMissionChannels(owners, date);
+        var syncUserChannels = makeMissionChannels(sync_user, date);
 
         switch (params.action) {
             case CREATING:
             case UPDATING:
                 checkLocation(doc, oldDoc);
                 checkName(doc, oldDoc);
-                //checkAddress(doc, oldDoc);
-                // Adds an access to owner at his specific channel
-                for (var i = 0; i < ownersChannels.length; i++)
-                    access([owners[i]], [ownersChannels[i]]);
+                access([sync_user], [syncUserChannels]);
                 break
             case DELETING:
             default:
-        }
+        } 
         // Add current doc in all channels
-        channel(ownersChannels);
-        // requireAccess(ownersChannels);
+        channel([syncUserChannels]);
     }
 
     // ######################
@@ -227,11 +220,10 @@ function sync_func(doc, oldDoc) {
     // ####################
     // Check Document Field
     // ####################
-    function checkUser(doc, oldDoc) {
-
+    function checkSyncUser(doc, oldDoc) {
         // Make sure that the user propery exists:
-        var user = oldDoc ? oldDoc.user : doc.user;
-        if (!user) {
+        var sync_user = oldDoc ? oldDoc.sync_user : doc.sync_user;
+        if (!sync_user) {
             throw ({
                 forbidden: "Document must have user"
             });
@@ -241,7 +233,7 @@ function sync_func(doc, oldDoc) {
                 forbidden: "It can only have one user"
             });
         }
-        return user;
+        return sync_user;
     }
 
     function checkOwners(doc, oldDoc) {
@@ -356,7 +348,7 @@ function sync_func(doc, oldDoc) {
         return CURRENT_LOCATION + CHANNEL_SEPARATOR + owner;
     }
 
-    function makeMissionChannels(owners, date) {
+    function makeMissionChannels(sync_user, date) {
         // Date format yyyyMMdd for channel
         var timestamp = Date.parse(date);
         if (isNaN(timestamp))
@@ -368,12 +360,9 @@ function sync_func(doc, oldDoc) {
             ("0" + (date.getMonth() + 1)).slice(-2) +
             ("0" + date.getDate()).slice(-2)
 
-        var owner_channels = [];
-        for (var i = 0; i < owners.length; i++) {
-            // Create channel patern [type:owner:yyyyMMdd]
-            owner_channels[i] = MISSION + CHANNEL_SEPARATOR + owners[i] + CHANNEL_SEPARATOR + channel_date;
-        }
-        return owner_channels;
+        // Create channel patern [type:owner:yyyyMMdd]
+        var sync_user_channel = MISSION + CHANNEL_SEPARATOR + sync_user + CHANNEL_SEPARATOR + channel_date;
+        return sync_user_channel;
     }
 
     // ######################
