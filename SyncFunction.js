@@ -196,7 +196,17 @@ function sync_func(doc, oldDoc) {
     // CURRENT LOCATION MANAGER
     // ######################
     function current_location(doc, oldDoc, params) {
-      // TODO
+      var owner = doc.owner;
+      switch (params.action) {
+          case UPDATING:
+            owner = oldDoc.owner;
+          case CREATING:
+            var chan = makeCurrentLocationChannel(owner);
+            channel([chan]);
+            access([owner], [chan]);
+          case DELETING:
+          default:
+      }
     }
 
     // ######################
@@ -339,6 +349,11 @@ function sync_func(doc, oldDoc) {
 
     function makeUserChannel(user) {
         return USER + CHANNEL_SEPARATOR + user;
+    }
+
+
+    function makeCurrentLocationChannel(owner) {
+        return CURRENT_LOCATION + CHANNEL_SEPARATOR + owner;
     }
 
     function makeMissionChannels(owners, date) {
