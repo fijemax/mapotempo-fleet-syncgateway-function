@@ -30,6 +30,7 @@ function sync_func(doc, oldDoc) {
         user: user,
         mission: mission,
         mission_status_type: mission_status_type,
+        mission_status_type: mission_status_action,
         mission_status: "",
         track: track,
         current_location: current_location,
@@ -175,14 +176,17 @@ function sync_func(doc, oldDoc) {
     // ######################
     function mission_status_type(doc, oldDoc, params) {
         var missionStatusTypeChannel = makeMissionStatusTypeChannel(params.company_id);
-        /*switch (params.action) {
-            case CREATING:
-            case UPDATING:
-            case DELETING:
-            default:
-        }*/
         // Add current doc in all channels
         channel([missionStatusTypeChannel]);
+    }
+
+    // ######################
+    // MISSION STATUS ACTION MANAGER
+    // ######################
+    function mission_status_action(doc, oldDoc, params) {
+        var missionStatusActionChannel = makeMissionStatusActionChannel(params.company_id);
+        // Add current doc in all channels
+        channel([missionStatusActionChannel]);
     }
 
     // ######################
