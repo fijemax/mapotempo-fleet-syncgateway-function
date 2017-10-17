@@ -30,7 +30,7 @@ function sync_func(doc, oldDoc) {
         user: user,
         mission: mission,
         mission_status_type: mission_status_type,
-        mission_status_type: mission_status_action,
+        mission_status_action: mission_status_action,
         mission_status: "",
         track: track,
         current_location: current_location,
@@ -96,7 +96,7 @@ function sync_func(doc, oldDoc) {
     // #######################################
 
     // ###############
-    // COMPANY MANAGER
+    // COMPANY MANAGER
     // ###############
     function company(doc, oldDoc, params) {
         var companyChannel = makeCompanyChannel(params.company_id);
@@ -115,7 +115,7 @@ function sync_func(doc, oldDoc) {
     }
 
     // ##############
-    // USER MANAGER
+    // USER MANAGER
     // ##############
     function user(doc, oldDoc, params) {
         var sync_user = checkSyncUser(doc, oldDoc);
@@ -126,7 +126,7 @@ function sync_func(doc, oldDoc) {
         doc.channels.push(companyChannel);
         var missionStatusTypeChannel = makeMissionStatusTypeChannel(params.company_id);
         doc.channels.push(missionStatusTypeChannel);
-        var missionStatusActionChannel = makeMissionStatusTypeChannel(params.company_id);
+        var missionStatusActionChannel = makeMissionStatusActionChannel(params.company_id);
         doc.channels.push(missionStatusActionChannel);
         switch (params.action) {
             case CREATING:
@@ -147,7 +147,7 @@ function sync_func(doc, oldDoc) {
     }
 
     // ###############
-    // MISSION MANAGER
+    // MISSION MANAGER
     // ###############
     function mission(doc, oldDoc, params) {
         // Check owners
@@ -172,7 +172,7 @@ function sync_func(doc, oldDoc) {
     }
 
     // ######################
-    // MISSION STATUS TYPE MANAGER
+    // MISSION STATUS TYPE MANAGER
     // ######################
     function mission_status_type(doc, oldDoc, params) {
         var missionStatusTypeChannel = makeMissionStatusTypeChannel(params.company_id);
@@ -181,7 +181,7 @@ function sync_func(doc, oldDoc) {
     }
 
     // ######################
-    // MISSION STATUS ACTION MANAGER
+    // MISSION STATUS ACTION MANAGER
     // ######################
     function mission_status_action(doc, oldDoc, params) {
         var missionStatusActionChannel = makeMissionStatusActionChannel(params.company_id);
@@ -190,13 +190,13 @@ function sync_func(doc, oldDoc) {
     }
 
     // ######################
-    // TRACK MANAGER
+    // TRACK MANAGER
     // ######################
     function track(doc, oldDoc, params) {
     }
 
     // ######################
-    // CURRENT LOCATION MANAGER
+    // CURRENT LOCATION MANAGER
     // ######################
     function current_location(doc, oldDoc, params) {
       var owner = doc.owner;
@@ -213,7 +213,7 @@ function sync_func(doc, oldDoc) {
     }
 
     // ######################
-    // DEFAULT MANAGER
+    // DEFAULT MANAGER
     // ######################
     function default_manager(doc, oldDoc, params) {
       // TODO
@@ -332,7 +332,7 @@ function sync_func(doc, oldDoc) {
     }
 */
     function checkName(doc, oldDoc) {
-        if (!doc.name ||  typeof(doc.name) !== "string") {
+        if (!doc.name ||  typeof(doc.name) !== "string") {
             throw ({
                 forbidden: "Document must have a name"
             });
