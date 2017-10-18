@@ -23,7 +23,7 @@ describe("Mission create update delete test", function() {
             },
             "comment": "laisser le colis au gardein",
             "company_id": "mapotempo_company",
-            "delivery_date": "2017-07-21T16:22:27.348Z",
+            "date": "2017-07-21T16:22:27.348Z",
             "duration": 50,
             "location": {
               "lat": "40.0",
@@ -31,7 +31,7 @@ describe("Mission create update delete test", function() {
             },
             "mission_status_type_id": "Pending:7Cito9g5g5-defd-4b40-58g-9e33abg57185",
             "name": "test",
-            "owners": ["static", "superman"],
+            "sync_user": "static",
             "phone": "0600010203",
             "reference": "ABCDEF",
             "time_windows": [
@@ -52,21 +52,15 @@ describe("Mission create update delete test", function() {
         testHelper.verifyDocumentCreated(
             doc, {
                 expectedRoles: ["mapotempo_company.mission.creating"],
-                expectedUsers: ["static", "superman"]
+                expectedUsers: ["static"]
             }, [{
                     expectedType: "channel",
                     expectedChannels: ["mission:static:20170721"],
                     expectedUsers: ["static"]
-                },
-                {
-                    expectedType: "channel",
-                    expectedChannels: ["mission:superman:20170721"],
-                    expectedUsers: ["superman"]
-                }
-            ]);
+                }]);
     });
 
-    it("Create : 2- can't create a mission document with owners array empty", function() {
+    it("Create : 2- can't create a mission document with sync_user empty", function() {
         var doc = {
             "address": {
               "city": "Paris",
@@ -78,7 +72,7 @@ describe("Mission create update delete test", function() {
             },
             "comment": "laisser le colis au gardein",
             "company_id": "mapotempo_company",
-            "delivery_date": "2017-07-21T16:22:27.348Z",
+            "date": "2017-07-21T16:22:27.348Z",
             "duration": 50,
             "location": {
               "lat": "40.0",
@@ -86,8 +80,8 @@ describe("Mission create update delete test", function() {
             },
             "mission_status_type_id": "Pending:7Cito9g5g5-defd-4b40-58g-9e33abg57185",
             "name": "test",
-            "owners": [],
-            // "owners": ["static", "superman"],
+            "sync_user": "",
+            // "sync_user": "static",
             "phone": "0600010203",
             "reference": "ABCDEF",
             "time_windows": [
@@ -108,13 +102,13 @@ describe("Mission create update delete test", function() {
         testHelper.verifyDocumentNotCreated(
             doc,
             "mission",
-            "Document must have at least one owner", {
+            "Document must have user", {
                 expectedRoles: ["mapotempo_company.mission.creating"],
             }
         );
     });
 
-    it("Create : 3- can't create a mission document without owners field", function() {
+    it("Create : 3- can't create a mission document without sync_user field", function() {
         var doc = {
             "address": {
               "city": "Paris",
@@ -126,7 +120,7 @@ describe("Mission create update delete test", function() {
             },
             "comment": "laisser le colis au gardein",
             "company_id": "mapotempo_company",
-            "delivery_date": "2017-07-21T16:22:27.348Z",
+            "date": "2017-07-21T16:22:27.348Z",
             "duration": 50,
             "location": {
               "lat": "40.0",
@@ -134,7 +128,7 @@ describe("Mission create update delete test", function() {
             },
             "mission_status_type_id": "Pending:7Cito9g5g5-defd-4b40-58g-9e33abg57185",
             "name": "test",
-            // "owners": ["static", "superman"],
+            // "sync_user": "static",
             "phone": "0600010203",
             "reference": "ABCDEF",
             "time_windows": [
@@ -155,13 +149,13 @@ describe("Mission create update delete test", function() {
         testHelper.verifyDocumentNotCreated(
             doc,
             "mission",
-            "Document must have owners", {
+            "Document must have user", {
                 expectedRoles: ["mapotempo_company.mission.creating"],
             }
         );
     });
 
-    it("Create : 4- can't create a mission document with delivery_date field improperly formatted", function() {
+    it("Create : 4- can't create a mission document with date field improperly formatted", function() {
         var doc = {
             "address": {
               "city": "Paris",
@@ -173,8 +167,8 @@ describe("Mission create update delete test", function() {
             },
             "comment": "laisser le colis au gardein",
             "company_id": "mapotempo_company",
-            "delivery_date": "23 juin 1912",
-            // "delivery_date": "2017-07-21T16:22:27.348Z",
+            "date": "23 juin 1912",
+            // "date": "2017-07-21T16:22:27.348Z",
             "duration": 50,
             "location": {
               "lat": "40.0",
@@ -182,7 +176,7 @@ describe("Mission create update delete test", function() {
             },
             "mission_status_type_id": "Pending:7Cito9g5g5-defd-4b40-58g-9e33abg57185",
             "name": "test",
-            "owners": ["static", "superman"],
+            "sync_user": "static",
             "phone": "0600010203",
             "reference": "ABCDEF",
             "time_windows": [
@@ -203,14 +197,14 @@ describe("Mission create update delete test", function() {
         testHelper.verifyDocumentNotCreated(
             doc,
             "mission",
-            "Document must have a delivery_date ISO8601 valid format", {
-                expectedUsers: ["static", "superman"],
+            "Document must have a date ISO8601 valid format", {
+                expectedUsers: ["static"],
                 expectedRoles: ["mapotempo_company.mission.creating"]
             }
         );
     });
 
-    it("Create : 5- can't create a mission document without delivery_date field", function() {
+    it("Create : 5- can't create a mission document without date field", function() {
         var doc = {
             "address": {
               "city": "Paris",
@@ -222,7 +216,7 @@ describe("Mission create update delete test", function() {
             },
             "comment": "laisser le colis au gardein",
             "company_id": "mapotempo_company",
-            // "delivery_date": "2017-07-21T16:22:27.348Z",
+            // "date": "2017-07-21T16:22:27.348Z",
             "duration": 50,
             "location": {
               "lat": "40.0",
@@ -230,7 +224,7 @@ describe("Mission create update delete test", function() {
             },
             "mission_status_type_id": "Pending:7Cito9g5g5-defd-4b40-58g-9e33abg57185",
             "name": "test",
-            "owners": ["static", "superman"],
+            "sync_user": "static",
             "phone": "0600010203",
             "reference": "ABCDEF",
             "time_windows": [
@@ -251,8 +245,8 @@ describe("Mission create update delete test", function() {
         testHelper.verifyDocumentNotCreated(
             doc,
             "mission",
-            "Document must have a delivery_date", {
-                expectedUsers: ["static", "superman"],
+            "Document must have a date", {
+                expectedUsers: ["static"],
                 expectedRoles: ["mapotempo_company.mission.creating"]
             }
         );
@@ -270,7 +264,7 @@ describe("Mission create update delete test", function() {
             },
             "comment": "laisser le colis au gardein",
             // "company_id": "mapotempo_company",
-            "delivery_date": "2017-07-21T16:22:27.348Z",
+            "date": "2017-07-21T16:22:27.348Z",
             "duration": 50,
             "location": {
               "lat": "40.0",
@@ -278,7 +272,7 @@ describe("Mission create update delete test", function() {
             },
             "mission_status_type_id": "Pending:7Cito9g5g5-defd-4b40-58g-9e33abg57185",
             "name": "test",
-            "owners": ["static", "superman"],
+            "sync_user": "static",
             "phone": "0600010203",
             "reference": "ABCDEF",
             "time_windows": [
@@ -317,7 +311,7 @@ describe("Mission create update delete test", function() {
             },
             "comment": "laisser le colis au gardein",
             "company_id": "mapotempo_company",
-            "delivery_date": "2017-07-21T16:22:27.348Z",
+            "date": "2017-07-21T16:22:27.348Z",
             "duration": 50,
             //"location": {
             //  "lat": "40.0",
@@ -325,7 +319,7 @@ describe("Mission create update delete test", function() {
             // },
             "mission_status_type_id": "Pending:7Cito9g5g5-defd-4b40-58g-9e33abg57185",
             "name": "test",
-            "owners": ["static", "superman"],
+            "sync_user": "static",
             "phone": "0600010203",
             "reference": "ABCDEF",
             "time_windows": [
@@ -348,7 +342,7 @@ describe("Mission create update delete test", function() {
             "mission",
             "Document must have a location", {
                 expectedRoles: ["mapotempo_company.mission.creating"],
-                expectedUsers: ["static", "superman"]
+                expectedUsers: ["static"]
             });
     });
 
@@ -364,7 +358,7 @@ describe("Mission create update delete test", function() {
             },
             "comment": "laisser le colis au gardein",
             "company_id": "mapotempo_company",
-            "delivery_date": "2017-07-21T16:22:27.348Z",
+            "date": "2017-07-21T16:22:27.348Z",
             "duration": 50,
             "location": {
               "lat": "40.0",
@@ -372,7 +366,7 @@ describe("Mission create update delete test", function() {
             },
             "mission_status_type_id": "Pending:7Cito9g5g5-defd-4b40-58g-9e33abg57185",
             // "name": "test",
-            "owners": ["static", "superman"],
+            "sync_user": "static",
             "phone": "0600010203",
             "reference": "ABCDEF",
             "time_windows": [
@@ -395,21 +389,21 @@ describe("Mission create update delete test", function() {
             "mission",
             "Document must have a name", {
                 expectedRoles: ["mapotempo_company.mission.creating"],
-                expectedUsers: ["static", "superman"]
+                expectedUsers: ["static"]
             });
     });
 
     it("Create : 9- can create a mission document without address field", function() {
         var doc = {
             "company_id": "mapotempo_company",
-            "delivery_date": "2017-07-21T16:22:27.348Z",
+            "date": "2017-07-21T16:22:27.348Z",
             "location": {
               "lat": "40.0",
               "lon": "-1.0"
             },
             "mission_status_type_id": "Pending:7Cito9g5g5-defd-4b40-58g-9e33abg57185",
             "name": "test",
-            "owners": ["static", "superman"],
+            "sync_user": "static",
             "type": "mission",
             "_rev": "74-5dafed6558915c015ac98f338382067a",
             "_id": "Mission_68g95ac3-da6d-4b40-973b-9e3341879085"
@@ -418,27 +412,21 @@ describe("Mission create update delete test", function() {
         testHelper.verifyDocumentCreated(
             doc, {
                 expectedRoles: ["mapotempo_company.mission.creating"],
-                expectedUsers: ["static", "superman"]
+                expectedUsers: ["static"]
             }, [{
                     expectedType: "channel",
                     expectedChannels: ["mission:static:20170721"],
                     expectedUsers: ["static"]
-                },
-                {
-                    expectedType: "channel",
-                    expectedChannels: ["mission:superman:20170721"],
-                    expectedUsers: ["superman"]
-                }
-            ]);
+                }]);
     });
 
     // ####################
     // TEST UPDATE
     // test detail : TODO
     // ######
-    it("Update : 1- can update the delivery_date field mission document", function() {
+    it("Update : 1- can update the date field mission document", function() {
         var oldDoc = {
-            "delivery_date": "2017-07-21T16:22:27.348Z",
+            "date": "2017-07-21T16:22:27.348Z",
             "company_id": "mapotempo_company",
             "location": {
                 "lat": 45.0,
@@ -453,35 +441,29 @@ describe("Mission create update delete test", function() {
                 "detail": "Pépinière éco-créative" // text
             },
             "name": "test",
-            "owners": ["static", "superman"],
+            "sync_user": "static",
             "type": "mission",
             "_id": "Mission_1534a8de-b412-49bc-97a8-3b535d131406"
         }
 
         var doc = Object.assign({}, oldDoc);
-        doc.delivery_date = "2017-07-25T16:22:27.348Z";
+        doc.date = "2017-07-25T16:22:27.348Z";
 
         testHelper.verifyDocumentReplaced(
             doc,
             oldDoc, {
                 expectedRoles: ["mapotempo_company.mission.updating"],
-                expectedUsers: ["static", "superman"]
+                expectedUsers: ["static"]
             }, [{
                     expectedType: "channel",
                     expectedUsers: ["static"],
                     expectedChannels: ["mission:static:20170725"]
-                },
-                {
-                    expectedType: "channel",
-                    expectedUsers: ["superman"],
-                    expectedChannels: ["mission:superman:20170725"]
-                }
-            ]);
+                }]);
     });
 
     it("Update : 2- can update the location field mission document", function() {
         var oldDoc = {
-            "delivery_date": "2017-07-21T16:22:27.348Z",
+            "date": "2017-07-21T16:22:27.348Z",
             "company_id": "mapotempo_company",
             "location": {
                 "lat": 45.0,
@@ -496,7 +478,7 @@ describe("Mission create update delete test", function() {
                 "detail": "Pépinière éco-créative" // text
             },
             "name": "test",
-            "owners": ["static", "superman"],
+            "sync_user": "static",
             "type": "mission",
             "_id": "Mission_1534a8de-b412-49bc-97a8-3b535d131406"
         }
@@ -509,23 +491,17 @@ describe("Mission create update delete test", function() {
             doc,
             oldDoc, {
                 expectedRoles: ["mapotempo_company.mission.updating"],
-                expectedUsers: ["static", "superman"]
+                expectedUsers: ["static"]
             }, [{
                     expectedType: "channel",
                     expectedUsers: ["static"],
                     expectedChannels: ["mission:static:20170721"]
-                },
-                {
-                    expectedType: "channel",
-                    expectedUsers: ["superman"],
-                    expectedChannels: ["mission:superman:20170721"]
-                }
-            ]);
+                }]);
     });
 
     it("Update : 3- can update the name field mission document", function() {
         var oldDoc = {
-            "delivery_date": "2017-07-21T16:22:27.348Z",
+            "date": "2017-07-21T16:22:27.348Z",
             "company_id": "mapotempo_company",
             "location": {
                 "lat": 45.0,
@@ -540,7 +516,7 @@ describe("Mission create update delete test", function() {
                 "detail": "Pépinière éco-créative" // text
             },
             "name": "test",
-            "owners": ["static", "superman"],
+            "sync_user": "static",
             "type": "mission",
             "_id": "Mission_1534a8de-b412-49bc-97a8-3b535d131406"
         }
@@ -552,23 +528,17 @@ describe("Mission create update delete test", function() {
             doc,
             oldDoc, {
                 expectedRoles: ["mapotempo_company.mission.updating"],
-                expectedUsers: ["static", "superman"]
+                expectedUsers: ["static"]
             }, [{
                     expectedType: "channel",
                     expectedUsers: ["static"],
                     expectedChannels: ["mission:static:20170721"]
-                },
-                {
-                    expectedType: "channel",
-                    expectedUsers: ["superman"],
-                    expectedChannels: ["mission:superman:20170721"]
-                }
-            ]);
+                }]);
     });
 
     it("Update : 4- can't update the company_id mission field", function() {
         var oldDoc = {
-            "delivery_date": "2017-07-21T16:22:27.348Z",
+            "date": "2017-07-21T16:22:27.348Z",
             "company_id": "mapotempo_company",
             "location": {
                 "lat": 45.0,
@@ -583,7 +553,7 @@ describe("Mission create update delete test", function() {
                 "detail": "Pépinière éco-créative" // text
             },
             "name": "test",
-            "owners": ["static", "superman"],
+            "sync_user": "static",
             "type": "mission",
             "_id": "Mission_1534a8de-b412-49bc-97a8-3b535d131406"
         }
@@ -602,7 +572,7 @@ describe("Mission create update delete test", function() {
 
     it("Update : 5- can update the owners field mission document", function() {
         var oldDoc = {
-            "delivery_date": "2017-07-21T16:22:27.348Z",
+            "date": "2017-07-21T16:22:27.348Z",
             "company_id": "mapotempo_company",
             "location": {
                 "lat": 45.0,
@@ -617,35 +587,29 @@ describe("Mission create update delete test", function() {
                 "detail": "Pépinière éco-créative" // text
             },
             "name": "test",
-            "owners": ["static", "superman"],
+            "sync_user": "static",
             "type": "mission",
             "_id": "Mission_1534a8de-b412-49bc-97a8-3b535d131406"
         }
 
         var doc = Object.assign({}, oldDoc);
-        doc.ownrs = ["statoc", "superman"];
+        doc.ownrs = ["statoc"];
 
         testHelper.verifyDocumentReplaced(
             doc,
             oldDoc, {
                 expectedRoles: ["mapotempo_company.mission.updating"],
-                expectedUsers: ["static", "superman"]
+                expectedUsers: ["static"]
             }, [{
                     expectedType: "channel",
                     expectedUsers: ["static"],
                     expectedChannels: ["mission:static:20170721"]
-                },
-                {
-                    expectedType: "channel",
-                    expectedUsers: ["superman"],
-                    expectedChannels: ["mission:superman:20170721"]
-                }
-            ]);
+                }]);
     });
 
     it("Update : 6- can update the address field mission document", function() {
         var oldDoc = {
-            "delivery_date": "2017-07-21T16:22:27.348Z",
+            "date": "2017-07-21T16:22:27.348Z",
             "company_id": "mapotempo_company",
             "location": {
                 "lat": 45.0,
@@ -660,7 +624,7 @@ describe("Mission create update delete test", function() {
                 "detail": "Pépinière éco-créative"
             },
             "name": "test",
-            "owners": ["static", "superman"],
+            "sync_user": "static",
             "type": "mission",
             "_id": "Mission_1534a8de-b412-49bc-97a8-3b535d131406"
         }
@@ -676,18 +640,12 @@ describe("Mission create update delete test", function() {
             doc,
             oldDoc, {
                 expectedRoles: ["mapotempo_company.mission.updating"],
-                expectedUsers: ["static", "superman"]
+                expectedUsers: ["static"]
             }, [{
                     expectedType: "channel",
                     expectedUsers: ["static"],
                     expectedChannels: ["mission:static:20170721"]
-                },
-                {
-                    expectedType: "channel",
-                    expectedUsers: ["superman"],
-                    expectedChannels: ["mission:superman:20170721"]
-                }
-            ]);
+                }]);
     });
 
     // ####################
@@ -696,7 +654,7 @@ describe("Mission create update delete test", function() {
     // ######
     it("Delete : 1- can delete a mission document", function() {
         var oldDoc = {
-            "delivery_date": "2017-07-21T16:22:27.348Z",
+            "date": "2017-07-21T16:22:27.348Z",
             "company_id": "mapotempo_company",
             "location": {
                 "lat": 45.0,
@@ -711,7 +669,7 @@ describe("Mission create update delete test", function() {
                 "detail": "Pépinière éco-créative" // text
             },
             "name": "test",
-            "owners": ["static", "superman"],
+            "sync_user": "static",
             "type": "mission",
             "_id": "Mission_1534a8de-b412-49bc-97a8-3b535d131406"
         }
@@ -719,7 +677,7 @@ describe("Mission create update delete test", function() {
         testHelper.verifyDocumentDeleted(
             oldDoc, {
                 expectedRoles: ["mapotempo_company.mission.deleting"],
-                expectedUsers: ["static", "superman"]
+                expectedUsers: ["static"]
             });
     });
 });
