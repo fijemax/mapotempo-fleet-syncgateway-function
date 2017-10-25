@@ -128,12 +128,13 @@ function sync_func(doc, oldDoc) {
         doc.channels.push(missionStatusTypeChannel);
         var missionStatusActionChannel = makeMissionStatusActionChannel(params.company_id);
         doc.channels.push(missionStatusActionChannel);
+
         switch (params.action) {
             case CREATING:
             case UPDATING:
                 var userRoles = makeUserRoles(doc, oldDoc, params.company_id);
                 role([sync_user], userRoles);
-                access([sync_user], [channelUser]);
+      			    access([sync_user], [channelUser]);
                 access([sync_user], [companyChannel]);
                 access([sync_user], [missionStatusTypeChannel]);
                 access([sync_user], [missionStatusActionChannel]);
@@ -199,14 +200,12 @@ function sync_func(doc, oldDoc) {
     // CURRENT LOCATION MANAGER
     // ######################
     function current_location(doc, oldDoc, params) {
-      var owner = doc.owner;
+      var sync_user = checkSyncUser(doc, oldDoc);
       switch (params.action) {
           case UPDATING:
-            owner = oldDoc.owner;
           case CREATING:
-            var chan = makeCurrentLocationChannel(owner);
-            channel([chan]);
-            access([owner], [chan]);
+            var channelUser = makeUserChannel(sync_user);
+            channel([channelUser]);
           case DELETING:
           default:
       }
