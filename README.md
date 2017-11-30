@@ -63,8 +63,21 @@ TODO
 {
   "company_id": "company_XXXXX_XXXXX_XXXX_XXXXX",
   "type": "user",
-  "user": "chauffeur_1",
+  "sync_user": "chauffeur_1",
   "roles": ["mission-update", "mission-deleting", "mission-creating"],
+  "channels": [
+     "XXXX",
+     "XXXX",
+  ],
+  "roles": [
+    "mission.creating",
+    "mission.updating",
+    "mission.deleting",
+    "current_location.creating",
+    "current_location.updating",
+    "track.creating",
+    "track.updating"
+  ],
   "_id": "user_de20ef854f96c00fe46089d16f0554be"
 }
 ```
@@ -98,9 +111,7 @@ TODO
     "lon": "44.8547927"
   },
   "name": "Mission-48",
-  "owners": [
-    "chauffeur_1"
-  ],
+  "sync_user": "chauffeur_1",
   "mission_status_type_id": "mission_status_type_id",
   "phone": "0600000001",
   "reference": "ABCDEF",
@@ -125,6 +136,26 @@ TODO
 	RequireRole : company_id.mission.deleting
 ##### Generate and  assign channels
 	`owners` -> `mission:[owner]:[yyyyMMdd]`
+	note : yyyyMMdd is a date generate from iso 8601 date
+
+### Mission Placeholder document
+```json
+ {
+  "company_id": "company_XXXXX_XXXXX_XXXX_XXXXX",
+  "date": "2017-08-23T18:43:56.150Z",
+  "sync_user": "chauffeur_1",
+  "type": "mission_placeholder",
+  "_id": "mission_fff3e0a2-d250-416e-badb-ded0252da4bd"
+ }
+```
+##### On Create
+	RequireRole : company_id.mission_placehoder.creating
+##### On Update
+	RequireRole : company_id.mission_placehoder.updating
+##### On Delete
+	RequireRole : company_id.mission_placehoder.deleting
+##### Generate and  assign channels
+	`sync_user` -> `mission:[sync_user]:[yyyyMMdd]`
 	note : yyyyMMdd is a date generate from iso 8601 date
 
 ### Mission status type document

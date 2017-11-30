@@ -1,9 +1,67 @@
+/*
+ * Copyright © Mapotempo, 2017
+ *
+ * This file is part of Mapotempo.
+ *
+ * Mapotempo is free software. You can redistribute it and/or
+ * modify since you respect the terms of the GNU Affero General
+ * Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ *
+ * Mapotempo is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the Licenses for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Mapotempo. If not, see:
+ * <http://www.gnu.org/licenses/agpl.html>
+ */
+
+// #############################################################################
+// #############################################################################
+// ##     ____                      ____                                      ##
+// ##    / ___| _   _ _ __   ___   / ___| __ _| |_ _____      ____ _ _   _    ##
+// ##    \___ \| | | | '_ \ / __| | |  _ / _` | __/ _ \ \ /\ / / _` | | | |   ##
+// ##     ___) | |_| | | | | (__  | |_| | (_| | ||  __/\ V  V / (_| | |_| |   ##
+// ##    |____/ \__, |_| |_|\___|  \____|\__,_|\__\___| \_/\_/ \__,_|\__, |   ##
+// ##           |___/                                                |___/    ##
+// ##               _____                 _   _                               ##
+// ##              |  ___|   _ _ __   ___| |_(_) ___  _ __                    ##
+// ##              | |_ | | | | '_ \ / __| __| |/ _ \| '_ \                   ##
+// ##              |  _|| |_| | | | | (__| |_| | (_) | | | |                  ##
+// ##              |_|   \__,_|_| |_|\___|\__|_|\___/|_| |_|                  ##
+// ##                                                                         ##
+// ##                               ______                                    ##
+// ##                            .-"      "-.                                 ##
+// ##                           /            \                                ##
+// ##                          |              |                               ##
+// ##                          |,  .-.  .-.  ,|                               ##
+// ##                          | )(__/  \__)( |                               ##
+// ##                          |/     /\     \|                               ##
+// ##                          (_     ^^     _)                               ##
+// ##                            \__|IIIIII|__/                               ##
+// ##                            | \IIIIII/ |                                 ##
+// ##                            \          /                                 ##
+// ##                             `--------`                                  ##
+// ##                                                                         ##
+// #############################################################################
+// ##   DESCRIPTION : The sync Gateway function ensure the document           ##
+// ##   synchronisation managment.                                            ##
+// ##                                                                         ##
+// ##                         FIXME: TO COMPLETED                             ##
+// ##                                                                         ##
+// ##                                                                         ##
+// #############################################################################
+// #############################################################################
+
+
 function sync_func(doc, oldDoc) {
     // FIXME some time _deleted doc havn't type
     // For the moment only return and don't process this case
     if(doc._deleted && !doc.type && !oldDoc) {
         return;
     }
+
     // ########################
     // ########################
     // ##                    ##
@@ -15,17 +73,20 @@ function sync_func(doc, oldDoc) {
     var COMPANY = 'company';
     var USER = 'user';
     var MISSION = 'mission';
+    var MISSION_PLACEHOLDER = 'mission_placeholder';
     var MISSION_STATUS_TYPE = 'mission_status_type';
     var MISSION_STATUS_ACTION = 'mission_status_action';
     var MISSION_STATUS = 'mission_status';
     var TRACK = 'track';
     var CURRENT_LOCATION = 'current_location';
     var METADATA = 'metadata';
+
     // TYPES DRIVER
     var TYPES_DRIVER = {
         company: company,
         user: user,
         mission: mission,
+        mission_placeholder: mission_placeholder,
         mission_status_type: mission_status_type,
         mission_status_action: mission_status_action,
         mission_status: '',
@@ -33,13 +94,16 @@ function sync_func(doc, oldDoc) {
         current_location: current_location,
         metadata: ''
     }
+
     // ACTIONS CONST
     var CREATING = 'creating';
     var UPDATING = 'updating';
     var DELETING = 'deleting';
+
     // SEPARATOR
     var ROLE_SEPARATOR = '.';
     var CHANNEL_SEPARATOR = ':';
+
     // ######################
     // ######################
     // ##                  ##
@@ -47,6 +111,7 @@ function sync_func(doc, oldDoc) {
     // ##                  ##
     // ######################
     // ######################
+
     // *****************************************************************************************************************************************
     // * params : 'type', 'action' and 'role' are accessible for all the functions                                                             *
     // *  type       -> type is a string format extrat from doc.type, it is MANDATORY and it must be one of the key in TYPES_DRIVER            *
@@ -54,16 +119,19 @@ function sync_func(doc, oldDoc) {
     // *  company_id -> company_id is a id string format, we can't assure in the sync function that the company really exist in the bucket ... *
     // *  role       -> role is a string format as that 'company_id:type:action' if the action needed a role to be performed it is this        *
     // *****************************************************************************************************************************************
+
     var params = {
         type: 'unknow',      // The type of document
         action: 'unknow',    // The action being performed
         role: 'unknow',      // The role need to perform the action
         company_id: 'unknow' // The company id
     }
+
     params.type = checkAndGetType(doc, oldDoc);
     params.action = checkAndGetAction(doc, oldDoc);
     params.company_id = getCompanyID(doc, oldDoc, params.type);
     params.role = getRoleNeed(params.company_id, params.type, params.action);
+
     // #######################
     // #######################
     // ##                   ##
@@ -71,10 +139,12 @@ function sync_func(doc, oldDoc) {
     // ##                   ##
     // #######################
     // #######################
+
     // Check role and company
     requireRole(params.role);
     checkCompanyID(doc, oldDoc, params.type);
     TYPES_DRIVER[params.type](doc, oldDoc, params);
+
     // #######################################
     // #######################################
     // ##                                   ##
@@ -82,6 +152,7 @@ function sync_func(doc, oldDoc) {
     // ##                                   ##
     // #######################################
     // #######################################
+
     // ###############
     // COMPANY MANAGER
     // ###############
@@ -129,6 +200,7 @@ function sync_func(doc, oldDoc) {
         }
         channel([channelUser]);
     }
+
     // ###############
     // MISSION MANAGER
     // ###############
@@ -152,6 +224,29 @@ function sync_func(doc, oldDoc) {
         // Add current doc in all channels
         channel([syncUserChannels]);
     }
+
+    // ###########################
+    // MISSION PLACEHOLDER MANAGER
+    // ###########################
+    function mission_placeholder(doc, oldDoc, params) {
+        // Check owners
+        var sync_user = checkSyncUser(doc, oldDoc);
+        requireUser(sync_user);
+        // Check date and make channels
+        var date = checkDate(doc, oldDoc);
+        var syncUserChannels = makeMissionChannels(sync_user, date);
+            switch (params.action) {
+            case CREATING:
+            case UPDATING:
+                access([sync_user], [syncUserChannels]);
+                break
+            case DELETING:
+            default:
+        }
+        // Add current doc in all channels
+        channel([syncUserChannels]);
+    }
+
     // ######################
     // MISSION STATUS TYPE MANAGER
     // ######################
@@ -160,6 +255,7 @@ function sync_func(doc, oldDoc) {
         // Add current doc in all channels
         channel([missionStatusTypeChannel]);
     }
+
     // ######################
     // MISSION STATUS ACTION MANAGER
     // ######################
@@ -168,11 +264,13 @@ function sync_func(doc, oldDoc) {
         // Add current doc in all channels
         channel([missionStatusActionChannel]);
     }
+
     // ######################
     // TRACK MANAGER
     // ######################
     function track(doc, oldDoc, params) {
     }
+
     // ######################
     // CURRENT LOCATION MANAGER
     // ######################
@@ -200,6 +298,7 @@ function sync_func(doc, oldDoc) {
     // ##                               ##
     // ###################################
     // ###################################
+
     // ####################
     // Check Document Field
     // ####################
@@ -305,6 +404,7 @@ function sync_func(doc, oldDoc) {
             });
         }
     }
+
     // ###############
     // Channel Factory
     // ###############
@@ -338,7 +438,8 @@ function sync_func(doc, oldDoc) {
         var sync_user_channel = MISSION + CHANNEL_SEPARATOR + sync_user + CHANNEL_SEPARATOR + channel_date;
         return sync_user_channel;
     }
-    // ######################
+
+   // ######################
     // Action and Type Helper
     // ######################
     function checkAndGetType(doc, oldDoc) {
@@ -369,6 +470,7 @@ function sync_func(doc, oldDoc) {
         else
             return UPDATING;
     }
+
     // #################
     // company_id Helper
     // #################
@@ -396,6 +498,7 @@ function sync_func(doc, oldDoc) {
                     });
                 }
     }
+
     // ###########
     // Role Helper
     // ###########
