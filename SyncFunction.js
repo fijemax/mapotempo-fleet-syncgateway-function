@@ -73,7 +73,7 @@ function sync_func(doc, oldDoc) {
     var COMPANY = 'company';
     var USER = 'user';
     var MISSION = 'mission';
-    var MISSION_PLACEHOLDER = 'mission_placeholder';
+    var MISSIONS_PLACEHOLDER = 'missions_placeholder';
     var MISSION_STATUS_TYPE = 'mission_status_type';
     var MISSION_STATUS_ACTION = 'mission_status_action';
     var MISSION_STATUS = 'mission_status';
@@ -86,7 +86,7 @@ function sync_func(doc, oldDoc) {
         company: company,
         user: user,
         mission: mission,
-        mission_placeholder: mission_placeholder,
+        missions_placeholder: missions_placeholder,
         mission_status_type: mission_status_type,
         mission_status_action: mission_status_action,
         mission_status: '',
@@ -227,8 +227,12 @@ function sync_func(doc, oldDoc) {
 
     // ###########################
     // MISSION PLACEHOLDER MANAGER
+    //
+    // The missions placeholder is used to maintain missions user's channel
+    // access even that it where are all removed.
+    // See => https://github.com/couchbase/sync_gateway/issues/1484
     // ###########################
-    function mission_placeholder(doc, oldDoc, params) {
+    function missions_placeholder(doc, oldDoc, params) {
         // Check owners
         var sync_user = checkSyncUser(doc, oldDoc);
         requireUser(sync_user);

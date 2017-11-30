@@ -139,12 +139,15 @@ TODO
 	note : yyyyMMdd is a date generate from iso 8601 date
 
 ### Mission Placeholder document
+The missions placeholder is used to maintain missions user's channel access even that it where are all removed.
+See => https://github.com/couchbase/sync_gateway/issues/1484
+
 ```json
  {
   "company_id": "company_XXXXX_XXXXX_XXXX_XXXXX",
   "date": "2017-08-23T18:43:56.150Z",
   "sync_user": "chauffeur_1",
-  "type": "mission_placeholder",
+  "type": "missions_placeholder",
   "_id": "mission_fff3e0a2-d250-416e-badb-ded0252da4bd"
  }
 ```
