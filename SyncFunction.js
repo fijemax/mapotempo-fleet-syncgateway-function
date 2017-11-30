@@ -45,15 +45,33 @@
 // ##                             `--------`                                  ##
 // ##                                                                         ##
 // #############################################################################
+// ##                                                                         ##
 // ##   DESCRIPTION : The sync Gateway function ensure the document           ##
-// ##   synchronisation managment.                                            ##
+// ##                 synchronisation managment and security. This function   ##
+// ##                 set all the necessary to ensure mobiles can perform     ##
+// ##                 correctly. HANDLE WITH CAUTION !!                       ##
 // ##                                                                         ##
-// ##                         FIXME: TO COMPLETED                             ##
-// ##                                                                         ##
-// ##                                                                         ##
-// #############################################################################
 // #############################################################################
 
+
+/*---------------------------------------------------------------------
+|       DOCUMENT-TYPE    |             DESCRIPTION                    |
+-----------------------------------------------------------------------
+|  company               | describe a company                         |
+|  user                  | describe a user company, refer a sync_user |
+|  mission               | describe a mission                         |
+|  mission_placeholder   | describe a mission date, this document is  |
+|                        | used to maintain missions user's channel   |
+|                        | acces.                                     |
+|  mission_status        | describe a status mission at a specific    |
+|                        | date with a specific mission_status_type.  |
+|  mission_status_type   | describe a status type possible for a      |
+|                        | company.                                   |
+|  mission_status_action | describe previous and after                |
+|                        | mission_status_type action.                |
+|  track                 | contains multiple locations history.       |
+|  current_location      | describe the current_location for a user.  |
+-----------------------------------------------------------------------*/
 
 function sync_func(doc, oldDoc) {
     // FIXME some time _deleted doc havn't type
