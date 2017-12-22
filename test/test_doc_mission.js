@@ -565,7 +565,7 @@ describe("Mission create update delete test", function() {
             doc,
             oldDoc,
             "mission",
-            "Document ID can't be modify", {
+            "Document ID cannot be modify", {
                 expectedRoles: ["mapotempo_company.mission.updating"]
             });
     });

@@ -205,9 +205,10 @@ function sync_func(doc, oldDoc) {
         switch (params.action) {
             case CREATING:
             case UPDATING:
+                channel([channelUser]);
                 var userRoles = makeUserRoles(doc, oldDoc, params.company_id);
                 role([sync_user], userRoles);
-                    access([sync_user], [channelUser]);
+                access([sync_user], [channelUser]);
                 access([sync_user], [companyChannel]);
                 access([sync_user], [missionStatusTypeChannel]);
                 access([sync_user], [missionStatusActionChannel]);
@@ -216,7 +217,6 @@ function sync_func(doc, oldDoc) {
                 break;
             default:
         }
-        channel([channelUser]);
     }
 
     // ###############
