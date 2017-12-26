@@ -90,6 +90,7 @@ function sync_func(doc, oldDoc) {
     // TYPES CONST
     var COMPANY = 'company';
     var USER = 'user';
+    var USER_PREFERENCE = 'user_settings';
     var MISSION = 'mission';
     var MISSIONS_PLACEHOLDER = 'missions_placeholder';
     var MISSION_STATUS_TYPE = 'mission_status_type';
@@ -103,13 +104,14 @@ function sync_func(doc, oldDoc) {
     var TYPES_DRIVER = {
         company: company,
         user: user,
+        user_settings: user_settings,
+        current_location: current_location,
+        track: track,
         mission: mission,
         missions_placeholder: missions_placeholder,
         mission_status_type: mission_status_type,
         mission_status_action: mission_status_action,
         mission_status: '',
-        track: track,
-        current_location: current_location,
         metadata: ''
     }
 
@@ -219,6 +221,43 @@ function sync_func(doc, oldDoc) {
         }
     }
 
+    // #############################
+    // CURRENT USER SETTINGS MANAGER
+    // #############################
+    function user_settings(doc, oldDoc, params) {
+      var sync_user = checkSyncUser(doc, oldDoc);
+      switch (params.action) {
+          case UPDATING:
+          case CREATING:
+            var channelUser = makeUserChannel(sync_user);
+            channel([channelUser]);
+            access([sync_user], [channelUser]);
+          case DELETING:
+          default:
+      }
+    }
+
+    // ######################
+    // CURRENT LOCATION MANAGER
+    // ######################
+    function current_location(doc, oldDoc, params) {
+      var sync_user = checkSyncUser(doc, oldDoc);
+      switch (params.action) {
+          case UPDATING:
+          case CREATING:
+            var channelUser = makeUserChannel(sync_user);
+            channel([channelUser]);
+          case DELETING:
+          default:
+      }
+    }
+
+    // ######################
+    // TRACK MANAGER
+    // ######################
+    function track(doc, oldDoc, params) {
+    }
+
     // ###############
     // MISSION MANAGER
     // ###############
@@ -288,31 +327,12 @@ function sync_func(doc, oldDoc) {
     }
 
     // ######################
-    // TRACK MANAGER
-    // ######################
-    function track(doc, oldDoc, params) {
-    }
-
-    // ######################
-    // CURRENT LOCATION MANAGER
-    // ######################
-    function current_location(doc, oldDoc, params) {
-      var sync_user = checkSyncUser(doc, oldDoc);
-      switch (params.action) {
-          case UPDATING:
-          case CREATING:
-            var channelUser = makeUserChannel(sync_user);
-            channel([channelUser]);
-          case DELETING:
-          default:
-      }
-    }
-    // ######################
     // DEFAULT MANAGER
     // ######################
     function default_manager(doc, oldDoc, params) {
       // TODO
     }
+
     // ###################################
     // ###################################
     // ##                               ##
