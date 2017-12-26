@@ -92,6 +92,115 @@ TODO
 	`user` -> `company:[company_id]`
 	`user` -> `mission_status_type:[company_id]`
 
+### UserCurrentLocation type document
+```json
+{
+  "type": "user_current_location",
+  "company_id": "company_XXXXX_XXXXX_XXXX_XXXXX",
+  "sync_user": "static",
+  "location": {
+    "accuracy": 22.232999801635742,
+    "altitude": 0,
+    "bearing": 0,
+    "cid": "1144834",
+    "lac": "49908",
+    "lat": "44.8270405",
+    "lon": "-0.6232571",
+    "mcc": "208",
+    "mnc": "10",
+    "signal_strength": 0,
+    "speed": 0,
+    "time": "2017-09-28T19:36:20.130Z"
+  },
+  "_rev": "2-91d463e366228c2ba5b8eadce2f0035a",
+  "_id": "user_current_location_xxxxxxx:xxxxxxx:xxxxxxx:lalal"
+}
+```
+##### On Create
+	RequireRole : [company_id].user_curent_location.creating
+##### On Update
+	RequireRole : [company_id].user_curent_location.updating
+##### On Delete
+	RequireRole : [company_id].user_curent_location.deleting
+##### Generate and  assign channels
+	`sync_user` -> `user_curent_location:[sync_user]`
+
+
+### UserPreference type document
+```json
+{
+  "type": "user_preference",
+  "company_id": "company_XXXXX_XXXXX_XXXX_XXXXX",
+  "sync_user": "static",
+  "_rev": "2-91d463e366228c2ba5b8eadce2f0035a",
+  "_id": "user_preference_xxxxxxx:xxxxxxx:xxxxxxx:lalal"
+}
+```
+##### On Create
+	RequireRole : [company_id].curent_location.creating
+##### On Update
+	RequireRole : [company_id].curent_location.updating
+##### On Delete
+	RequireRole : [company_id].curent_location.deleting
+##### Generate and  assign channels
+	`sync_user` -> `user_preference:[sync_user]`
+
+### UserTrack type document
+```json
+{
+  "type": "user_track",
+  "company_id": "company_XXXXX_XXXXX_XXXX_XXXXX",
+  "sync_user": "static",
+  "date": "2017-09-28T19:42:51.772Z",
+  "locations": [
+    {
+      "accuracy": 22.232999801635742,
+      "altitude": 0,
+      "bearing": 0,
+      "cid": "1144834",
+      "lac": "49908",
+      "lat": "44.8270405",
+      "lon": "-0.6232571",
+      "mcc": "208",
+      "mnc": "10",
+      "signal_strength": 0,
+      "speed": 0,
+      "time": "2017-09-28T19:36:20.130Z"
+    },
+    {
+      "accuracy": 33.97600173950195,
+      "altitude": 0,
+      "bearing": 0,
+      "cid": "1144834",
+      "lac": "49908",
+      "lat": "44.8260876",
+      "lon": "-0.6236643",
+      "mcc": "208",
+      "mnc": "10",
+      "signal_strength": 0,
+      "speed": 0,
+      "time": "2017-09-28T19:36:40.853Z"
+    },
+    {
+      "accuracy": 50,
+      "altitude": 0,
+      "bearing": 0,
+      "cid": "1144834",
+      "lac": "49908",
+      "lat": "44.8265026",
+      "lon": "-0.6246636",
+      "mcc": "208",
+      "mnc": "10",
+      "signal_strength": 0,
+      "speed": 0,
+      "time": "2017-09-28T19:37:03.854Z"
+    }
+  ],
+  "_rev": "2-91d463e366228c2ba5b8eadce2f0035a",
+  "_id": "user_track_xxxxxxx:xxxxxxx:xxxxxxx:lalal"
+}
+```
+
 ### Mission document
 ```json
  {
@@ -193,91 +302,3 @@ See => https://github.com/couchbase/sync_gateway/issues/1484
 ##### Generate and  assign channels
 	`owners` -> `mission_status_type:[company_id]`
 
-### Track type document
-```json
-{
-  "type": "track",
-  "company_id": "company_XXXXX_XXXXX_XXXX_XXXXX",
-  "owner": "static",
-  "date": "2017-09-28T19:42:51.772Z",
-  "locations": [
-    {
-      "accuracy": 22.232999801635742,
-      "altitude": 0,
-      "bearing": 0,
-      "cid": "1144834",
-      "lac": "49908",
-      "lat": "44.8270405",
-      "lon": "-0.6232571",
-      "mcc": "208",
-      "mnc": "10",
-      "signal_strength": 0,
-      "speed": 0,
-      "time": "2017-09-28T19:36:20.130Z"
-    },
-    {
-      "accuracy": 33.97600173950195,
-      "altitude": 0,
-      "bearing": 0,
-      "cid": "1144834",
-      "lac": "49908",
-      "lat": "44.8260876",
-      "lon": "-0.6236643",
-      "mcc": "208",
-      "mnc": "10",
-      "signal_strength": 0,
-      "speed": 0,
-      "time": "2017-09-28T19:36:40.853Z"
-    },
-    {
-      "accuracy": 50,
-      "altitude": 0,
-      "bearing": 0,
-      "cid": "1144834",
-      "lac": "49908",
-      "lat": "44.8265026",
-      "lon": "-0.6246636",
-      "mcc": "208",
-      "mnc": "10",
-      "signal_strength": 0,
-      "speed": 0,
-      "time": "2017-09-28T19:37:03.854Z"
-    }
-  ],
-  "_rev": "2-91d463e366228c2ba5b8eadce2f0035a",
-  "_id": "track_xxxxxxx:xxxxxxx:xxxxxxx:lalal"
-}
-```
-
-### CurrentLocation type document
-```json
-{
-  "type": "current_location",
-  "company_id": "company_XXXXX_XXXXX_XXXX_XXXXX",
-  "owner": "static",
-  "location": {
-    "accuracy": 22.232999801635742,
-    "altitude": 0,
-    "bearing": 0,
-    "cid": "1144834",
-    "lac": "49908",
-    "lat": "44.8270405",
-    "lon": "-0.6232571",
-    "mcc": "208",
-    "mnc": "10",
-    "signal_strength": 0,
-    "speed": 0,
-    "time": "2017-09-28T19:36:20.130Z"
-  },
-  "_rev": "2-91d463e366228c2ba5b8eadce2f0035a",
-  "_id": "current_location_xxxxxxx:xxxxxxx:xxxxxxx:lalal"
-}
-```
-##### On Create
-	RequireRole : [company_id].curent_location.creating
-##### On Update
-	RequireRole : [company_id].curent_location.updating
-##### On Delete
-	RequireRole : [company_id].curent_location.deleting
-##### Generate and  assign channels
-	`owners` -> `curent_location:[owner]`
