@@ -117,33 +117,33 @@ TODO
 }
 ```
 ##### On Create
-	RequireRole : [company_id].user_curent_location.creating
+	RequireRole : [company_id].user_current_location.creating
 ##### On Update
-	RequireRole : [company_id].user_curent_location.updating
+	RequireRole : [company_id].user_current_location.updating
 ##### On Delete
-	RequireRole : [company_id].user_curent_location.deleting
+	RequireRole : [company_id].user_current_location.deleting
 ##### Generate and  assign channels
-	`sync_user` -> `user_curent_location:[sync_user]`
+	`sync_user` -> `user_current_location:[sync_user]`
 
 
 ### UserPreference type document
 ```json
 {
-  "type": "user_preference",
+  "type": "user_settings",
   "company_id": "company_XXXXX_XXXXX_XXXX_XXXXX",
   "sync_user": "static",
   "_rev": "2-91d463e366228c2ba5b8eadce2f0035a",
-  "_id": "user_preference_xxxxxxx:xxxxxxx:xxxxxxx:lalal"
+  "_id": "user_settings_xxxxxxx:xxxxxxx:xxxxxxx:lalal"
 }
 ```
 ##### On Create
-	RequireRole : [company_id].curent_location.creating
+	RequireRole : [company_id].user_settings.creating
 ##### On Update
-	RequireRole : [company_id].curent_location.updating
+	RequireRole : [company_id].user_settings.updating
 ##### On Delete
-	RequireRole : [company_id].curent_location.deleting
+	RequireRole : [company_id].user_settings.deleting
 ##### Generate and  assign channels
-	`sync_user` -> `user_preference:[sync_user]`
+	`sync_user` -> `user_settings:[sync_user]`
 
 ### UserTrack type document
 ```json
