@@ -231,6 +231,7 @@ function sync_func(doc, oldDoc) {
           case CREATING:
             var channelUser = makeUserChannel(sync_user);
             channel([channelUser]);
+            access([sync_user], [channelUser]);
           case DELETING:
           default:
       }
