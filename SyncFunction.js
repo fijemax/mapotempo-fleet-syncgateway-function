@@ -96,8 +96,8 @@ function sync_func(doc, oldDoc) {
     var MISSION_STATUS_TYPE = 'mission_status_type';
     var MISSION_STATUS_ACTION = 'mission_status_action';
     var MISSION_STATUS = 'mission_status';
-    var TRACK = 'track';
-    var CURRENT_LOCATION = 'current_location';
+    var USER_TRACK = 'user_track';
+    var USER_CURRENT_LOCATION = 'user_current_location';
     var METADATA = 'metadata';
 
     // TYPES DRIVER
@@ -105,8 +105,8 @@ function sync_func(doc, oldDoc) {
         company: company,
         user: user,
         user_settings: user_settings,
-        current_location: current_location,
-        track: track,
+        user_current_location: user_current_location,
+        user_track: user_track,
         mission: mission,
         missions_placeholder: missions_placeholder,
         mission_status_type: mission_status_type,
@@ -221,6 +221,21 @@ function sync_func(doc, oldDoc) {
         }
     }
 
+    // ######################
+    // CURRENT LOCATION MANAGER
+    // ######################
+    function user_current_location(doc, oldDoc, params) {
+      var sync_user = checkSyncUser(doc, oldDoc);
+      switch (params.action) {
+          case UPDATING:
+          case CREATING:
+            var channelUser = makeUserChannel(sync_user);
+            channel([channelUser]);
+          case DELETING:
+          default:
+      }
+    }
+
     // #############################
     // CURRENT USER SETTINGS MANAGER
     // #############################
@@ -238,24 +253,9 @@ function sync_func(doc, oldDoc) {
     }
 
     // ######################
-    // CURRENT LOCATION MANAGER
-    // ######################
-    function current_location(doc, oldDoc, params) {
-      var sync_user = checkSyncUser(doc, oldDoc);
-      switch (params.action) {
-          case UPDATING:
-          case CREATING:
-            var channelUser = makeUserChannel(sync_user);
-            channel([channelUser]);
-          case DELETING:
-          default:
-      }
-    }
-
-    // ######################
     // TRACK MANAGER
     // ######################
-    function track(doc, oldDoc, params) {
+    function user_track(doc, oldDoc, params) {
     }
 
     // ###############
@@ -462,8 +462,8 @@ function sync_func(doc, oldDoc) {
     function makeUserChannel(user) {
         return USER + CHANNEL_SEPARATOR + user;
     }
-    function makeCurrentLocationChannel(owner) {
-        return CURRENT_LOCATION + CHANNEL_SEPARATOR + owner;
+    function makeUserCurrentLocationChannel(owner) {
+        return USER_CURRENT_LOCATION + CHANNEL_SEPARATOR + owner;
     }
     function makeMissionChannels(sync_user, date) {
         // Date format yyyyMMdd for channel
