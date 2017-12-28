@@ -93,6 +93,7 @@ function sync_func(doc, oldDoc) {
     var USER_PREFERENCE = 'user_settings';
     var MISSION = 'mission';
     var MISSIONS_PLACEHOLDER = 'missions_placeholder';
+    var MISSION_STATUS = 'mission_status';
     var MISSION_STATUS_TYPE = 'mission_status_type';
     var MISSION_STATUS_ACTION = 'mission_status_action';
     var MISSION_STATUS = 'mission_status';
@@ -109,6 +110,7 @@ function sync_func(doc, oldDoc) {
         user_track: user_track,
         mission: mission,
         missions_placeholder: missions_placeholder,
+        mission_status: mission_status,
         mission_status_type: mission_status_type,
         mission_status_action: mission_status_action,
         mission_status: '',
@@ -307,6 +309,12 @@ function sync_func(doc, oldDoc) {
         }
         // Add current doc in all channels
         channel([syncUserChannels]);
+    }
+
+    // ######################
+    // MISSION STATUS MANAGER
+    // ######################
+    function mission_status(doc, oldDoc, params) {
     }
 
     // ######################
